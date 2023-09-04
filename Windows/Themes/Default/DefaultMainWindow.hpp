@@ -6,14 +6,16 @@
 #define PINBOARD_DEFAULTMAINWINDOW_HPP
 
 
-#include "../../MainWindow.hpp"
+#include "../../IMainWindow.hpp"
 
-class DefaultMainWindow : public MainWindow
+class DefaultMainWindow : public IMainWindow
 {
 public:
-    DefaultMainWindow();
+    DefaultMainWindow(Globals *globals);
     void handleEvents() override;
     void draw() override;
+private:
+    void createContextMenu(sf::Vector2f position);
 };
 
 
