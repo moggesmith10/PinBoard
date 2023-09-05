@@ -11,7 +11,7 @@
 class IContextMenu : public IDrawable {
     std::vector<sf::Shape> shapes;
 public:
-    virtual void handleEvent(sf::Event event) = 0;
+    virtual bool handleEvent(sf::Event event) = 0;
 
 protected:
     Globals* globals;
