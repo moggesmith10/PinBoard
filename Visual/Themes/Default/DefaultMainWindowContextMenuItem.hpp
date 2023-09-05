@@ -15,6 +15,7 @@ public:
     void draw() override;
     DefaultMainWindowContextMenuItem();
     DefaultMainWindowContextMenuItem(std::string text, Globals* globals, sf::RenderWindow *renderWindow, sf::Vector2f position);
+    bool handleEvent(sf::Event event) override;
 private:
     sf::RenderWindow *renderWindow;
     sf::RectangleShape background;

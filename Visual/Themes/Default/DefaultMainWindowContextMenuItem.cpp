@@ -25,5 +25,25 @@ bool DefaultMainWindowContextMenuItem::isHovered(sf::Vector2f position) {
     return background.getGlobalBounds().contains(position);
 }
 
+bool DefaultMainWindowContextMenuItem::handleEvent(sf::Event event) {
+    bool hovered = isHovered(sf::Vector2f(event.mouseMove.x, event.mouseMove.y));
+    if (event.type == sf::Event::MouseMoved) {
+        if (hovered) {
+            background.setFillColor(sf::Color(180, 180, 200));
+        } else
+            background.setFillColor(sf::Color(255, 255, 255));
+    }
+    else if(event.type == sf::Event::MouseButtonPressed){
+        if(hovered){
+            background.setFillColor(sf::Color(150, 150, 170));
+        }
+    }
+    else if(event.type == sf::Event::MouseButtonReleased){
+        if(hovered){
+            background.setFillColor(sf::Color(180, 180, 200));
+        }
+    }
+}
+
 DefaultMainWindowContextMenuItem::DefaultMainWindowContextMenuItem() = default;
 

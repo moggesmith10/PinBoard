@@ -23,5 +23,9 @@ DefaultMainWindowContextMenu::~DefaultMainWindowContextMenu() {
 }
 
 void DefaultMainWindowContextMenu::handleEvent(sf::Event event) {
+    if (event.type == sf::Event::MouseMoved) {
+        if(addNodeButton.handleEvent(event)){
 
+        }
+    }
 }

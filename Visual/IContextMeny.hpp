@@ -9,8 +9,10 @@
 #include "IDrawable.hpp"
 
 class IContextMenu : public IDrawable {
-    virtual void handleEvent(sf::Event event) = 0;
     std::vector<sf::Shape> shapes;
+public:
+    virtual void handleEvent(sf::Event event) = 0;
+
 protected:
     Globals* globals;
 };

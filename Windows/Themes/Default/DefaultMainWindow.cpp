@@ -24,6 +24,8 @@ void DefaultMainWindow::handleEvents() {
                 createContextMenu(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
             }
         }
+        if(contextMenu != nullptr)
+            contextMenu->handleEvent(event);
     }
 }
 

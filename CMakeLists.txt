@@ -22,7 +22,8 @@ add_executable(PinBoard main.cpp
         Utilites/FontUtilities.cpp
         Utilites/FontUtilities.hpp
         Utilites/Globals.cpp
-        Utilites/Globals.hpp)
+        Utilites/Globals.hpp
+        Visual/INode.hpp)
 
 add_custom_command(TARGET PinBoard PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
