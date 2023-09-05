@@ -19,20 +19,32 @@ void DefaultMainWindow::handleEvents() {
         if (event.type == sf::Event::Closed) {
             this->renderWindow->close();
         }
+        if(contextMenu != nullptr)
+            if(contextMenu->handleEvent(event)) {
+                delete contextMenu;
+                contextMenu = nullptr;
+            }
+
         if(event.type == sf::Event::MouseButtonPressed){
             if(event.mouseButton.button == sf::Mouse::Right){
                 createContextMenu(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
+            } else if(event.mouseButton.button == sf::Mouse::Left){
+                if(contextMenu != nullptr){
+                    delete contextMenu;
+                    contextMenu = nullptr;
+                }
             }
         }
-        if(contextMenu != nullptr)
-            contextMenu->handleEvent(event);
     }
 }
 
 void DefaultMainWindow::draw() {
     this->renderWindow->clear(sf::Color::Black);
     if(this->contextMenu != nullptr){
-        this->contextMenu->draw();
+        this->contextMenu->draw(renderWindow);
+    }
+    for(INode *node : this->nodes){
+        node->draw(this->renderWindow);
     }
     this->renderWindow->display();
 }
@@ -40,5 +52,5 @@ void DefaultMainWindow::draw() {
 void DefaultMainWindow::createContextMenu(sf::Vector2f position) {
     delete this->contextMenu;
 
-    this->contextMenu = new DefaultMainWindowContextMenu(this->renderWindow, position, globals);
+    this->contextMenu = new DefaultMainWindowContextMenu(this->renderWindow, position, globals, this);
 }

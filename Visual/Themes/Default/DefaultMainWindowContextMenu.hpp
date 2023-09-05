@@ -11,16 +11,17 @@
 #include "../../../Utilites/Globals.hpp"
 #include "../../IContextMenuItem.hpp"
 #include "DefaultMainWindowContextMenuItem.hpp"
+#include "../../../Windows/IMainWindow.hpp"
 
 class DefaultMainWindowContextMenu : public IContextMenu {
 public:
-    DefaultMainWindowContextMenu(sf::RenderWindow *renderWindow, sf::Vector2f position, Globals *globals);
-    void draw() override;
+    DefaultMainWindowContextMenu(sf::RenderWindow *renderWindow, sf::Vector2f position, Globals *globals, IMainWindow *mainWindow);
+    void draw(sf::RenderWindow* renderWindow) override;
     ~DefaultMainWindowContextMenu() override;
-    void handleEvent(sf::Event event) override;
+    bool handleEvent(sf::Event event) override;
     sf::RectangleShape background;
     sf::RenderWindow *renderWindow;
-
+    IMainWindow *mainWindow;
     DefaultMainWindowContextMenuItem addNodeButton;
 };
 

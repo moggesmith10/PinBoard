@@ -8,7 +8,7 @@
 
 class IDrawable {
 public:
-    virtual void draw() = 0;
+    virtual void draw(sf::RenderWindow* renderWindow) = 0;
     IDrawable() = default;
     virtual ~IDrawable() = default;
 };

@@ -26,23 +26,27 @@ bool DefaultMainWindowContextMenuItem::isHovered(sf::Vector2f position) {
 }
 
 bool DefaultMainWindowContextMenuItem::handleEvent(sf::Event event) {
-    bool hovered = isHovered(sf::Vector2f(event.mouseMove.x, event.mouseMove.y));
-    if (event.type == sf::Event::MouseMoved) {
+
+    bool hovered;
+    if(event.type == sf::Event::MouseMoved) {
+        hovered = isHovered(sf::Vector2f(event.mouseMove.x, event.mouseMove.y));
+
         if (hovered) {
             background.setFillColor(sf::Color(180, 180, 200));
-        } else
+        } else {
             background.setFillColor(sf::Color(255, 255, 255));
+        }
     }
-    else if(event.type == sf::Event::MouseButtonPressed){
+
+    else if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+        hovered = isHovered(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
         if(hovered){
             background.setFillColor(sf::Color(150, 150, 170));
+            return true;
         }
     }
-    else if(event.type == sf::Event::MouseButtonReleased){
-        if(hovered){
-            background.setFillColor(sf::Color(180, 180, 200));
-        }
-    }
+
+    return false;
 }
 
 DefaultMainWindowContextMenuItem::DefaultMainWindowContextMenuItem() = default;

@@ -7,9 +7,11 @@
 
 #include "IWindow.hpp"
 #include "../Visual/IContextMeny.hpp"
+#include "../Visual/INode.hpp"
 
 class IMainWindow : public IWindow {
 public:
     IContextMenu *contextMenu = nullptr;
+    std::vector<INode*> nodes;
 };
 #endif //PINBOARD_IMAINWINDOW_HPP
