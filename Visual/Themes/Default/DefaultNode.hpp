@@ -10,13 +10,16 @@
 #include "../../INode.hpp"
 #include "../../../Utilites/Globals.hpp"
 
-class DefaultNode : public INode{
-    public:
-    void draw(sf::RenderWindow* renderWindow) override;
-    DefaultNode(sf::Vector2f position, Globals* globals);
+class DefaultNode : public INode {
+public:
+    void draw(sf::RenderWindow *renderWindow) override;
+
+    DefaultNode(sf::Vector2f position, Globals *globals);
+
+    void handleEvents(sf::Event event, EventResponse* response) override;
+
 private:
     sf::RectangleShape background;
-    sf::Text text;
 };
 
 

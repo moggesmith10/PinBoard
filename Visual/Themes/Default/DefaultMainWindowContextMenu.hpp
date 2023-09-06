@@ -15,10 +15,15 @@
 
 class DefaultMainWindowContextMenu : public IContextMenu {
 public:
-    DefaultMainWindowContextMenu(sf::RenderWindow *renderWindow, sf::Vector2f position, Globals *globals, IMainWindow *mainWindow);
-    void draw(sf::RenderWindow* renderWindow) override;
+    DefaultMainWindowContextMenu(sf::RenderWindow *renderWindow, sf::Vector2f position, Globals *globals,
+                                 IMainWindow *mainWindow);
+
+    void draw(sf::RenderWindow *renderWindow) override;
+
     ~DefaultMainWindowContextMenu() override;
-    bool handleEvent(sf::Event event) override;
+
+    void handleEvent(sf::Event event, EventResponse *response) override;
+
     sf::RectangleShape background;
     sf::RenderWindow *renderWindow;
     IMainWindow *mainWindow;

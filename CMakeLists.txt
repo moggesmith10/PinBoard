@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.26)
 project(PinBoard)
 
-find_package (SFML REQUIRED system window graphics network audio)
+find_package(SFML REQUIRED system window graphics network audio)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -25,7 +25,12 @@ add_executable(PinBoard main.cpp
         Utilites/Globals.hpp
         Visual/INode.hpp
         Visual/Themes/Default/DefaultNode.cpp
-        Visual/Themes/Default/DefaultNode.hpp)
+        Visual/Themes/Default/DefaultNode.hpp
+        Utilites/EventResponse.cpp
+        Utilites/EventResponse.hpp
+        Visual/ITextBox.hpp
+        Visual/Themes/Default/DefaultTextBox.cpp
+        Visual/Themes/Default/DefaultTextBox.hpp)
 
 add_custom_command(TARGET PinBoard PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory

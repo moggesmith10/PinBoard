@@ -12,6 +12,8 @@
 class IMainWindow : public IWindow {
 public:
     IContextMenu *contextMenu = nullptr;
-    std::vector<INode*> nodes;
+    ITextBox *textBox = nullptr;
+    std::vector<INode *> nodes;
 };
+
 #endif //PINBOARD_IMAINWINDOW_HPP

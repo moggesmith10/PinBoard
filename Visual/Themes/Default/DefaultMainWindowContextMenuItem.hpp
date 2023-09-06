@@ -12,10 +12,16 @@
 class DefaultMainWindowContextMenuItem : public IContextMenuItem {
 public:
     bool isHovered(sf::Vector2f position) override;
+
     void draw() override;
+
     DefaultMainWindowContextMenuItem();
-    DefaultMainWindowContextMenuItem(std::string text, Globals* globals, sf::RenderWindow *renderWindow, sf::Vector2f position);
-    bool handleEvent(sf::Event event) override;
+
+    DefaultMainWindowContextMenuItem(std::string text, Globals *globals, sf::RenderWindow *renderWindow,
+                                     sf::Vector2f position);
+
+    void handleEvent(sf::Event event, EventResponse *response) override;
+
 private:
     sf::RenderWindow *renderWindow;
     sf::RectangleShape background;

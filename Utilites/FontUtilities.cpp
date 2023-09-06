@@ -4,13 +4,13 @@
 
 #include "FontUtilities.hpp"
 
-sf::Font* FontUtilities::getFont(u_char font) {
+sf::Font *FontUtilities::getFont(u_char font) {
     return this->fontsArray[font];
 }
 
 FontUtilities::FontUtilities() {
-    this->fontsArray = std::vector<sf::Font*>(FONTLEN);
-    this->fontsArray[(u_char)FontUtilities::NotoSansMedium] = loadFont("NotoSans", "NotoSans-Medium");
+    this->fontsArray = std::vector<sf::Font *>(FONTLEN);
+    this->fontsArray[(u_char) FontUtilities::NotoSansMedium] = loadFont("NotoSans", "NotoSans-Medium");
 }
 
 sf::Font *FontUtilities::loadFont(std::string family, std::string name) {

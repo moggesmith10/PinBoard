@@ -3,7 +3,6 @@
 //
 
 #include <functional>
-#include <future>
 #include "DefaultMainWindow.hpp"
 #include "../../../Visual/Themes/Default/DefaultMainWindowContextMenu.hpp"
 
@@ -19,31 +18,44 @@ void DefaultMainWindow::handleEvents() {
         if (event.type == sf::Event::Closed) {
             this->renderWindow->close();
         }
-        if(contextMenu != nullptr)
-            if(contextMenu->handleEvent(event)) {
+        EventResponse *response = new EventResponse();
+        if (contextMenu != nullptr) {
+            contextMenu->handleEvent(event, response);
+            if (response->getDelete()) {
                 delete contextMenu;
                 contextMenu = nullptr;
             }
+        }
+        response->clear();
 
-        if(event.type == sf::Event::MouseButtonPressed){
-            if(event.mouseButton.button == sf::Mouse::Right){
+        if (event.type == sf::Event::MouseButtonPressed) {
+            if (event.mouseButton.button == sf::Mouse::Right) {
                 createContextMenu(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
-            } else if(event.mouseButton.button == sf::Mouse::Left){
-                if(contextMenu != nullptr){
-                    delete contextMenu;
-                    contextMenu = nullptr;
-                }
             }
         }
+
+        response->clear();
+
+        for(INode* node: this->nodes){
+            node->handleEvents(event, response);
+            if(response->getSelectedTextBox() != nullptr){
+                if(this->textBox != nullptr){
+                    this->textBox->isFocused = false;
+                }
+                this->textBox = static_cast<ITextBox *>(response->getSelectedTextBox());
+            }
+        }
+
+        delete response;
     }
 }
 
 void DefaultMainWindow::draw() {
     this->renderWindow->clear(sf::Color::Black);
-    if(this->contextMenu != nullptr){
+    if (this->contextMenu != nullptr) {
         this->contextMenu->draw(renderWindow);
     }
-    for(INode *node : this->nodes){
+    for (INode *node: this->nodes) {
         node->draw(this->renderWindow);
     }
     this->renderWindow->display();
