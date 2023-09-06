@@ -5,7 +5,7 @@
 
 int main() {
     Globals *globals = new Globals();
-    IWindow* mainWindow = new DefaultMainWindow(globals);
+    IWindow *mainWindow = new DefaultMainWindow(globals);
     while (mainWindow->renderWindow->isOpen()) {
         mainWindow->handleEvents();
         mainWindow->draw();

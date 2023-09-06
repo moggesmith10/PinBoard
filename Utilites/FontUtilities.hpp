@@ -12,12 +12,15 @@
 class FontUtilities {
 public:
     sf::Font *getFont(u_char font);
-    enum fonts{
+
+    enum fonts {
         NotoSansMedium,
         FONTLEN
     };
+
     FontUtilities();
-    std::vector<sf::Font*> fontsArray;
+
+    std::vector<sf::Font *> fontsArray;
 private:
     sf::Font *loadFont(std::string family, std::string name);
 };

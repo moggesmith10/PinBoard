@@ -7,9 +7,17 @@
 
 
 #include "IDrawable.hpp"
+#include "ITextBox.hpp"
 
-class INode : public IDrawable{
+class INode : public IDrawable {
 
+protected:
+    ITextBox *title;
+    ITextBox *content;
+public:
+    virtual void draw(sf::RenderWindow *renderWindow) = 0;
+
+    virtual void handleEvents(sf::Event event, EventResponse* response) = 0;
 };
 
 

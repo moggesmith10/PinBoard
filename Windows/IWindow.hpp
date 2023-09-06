@@ -9,12 +9,15 @@
 #include "SFML/Graphics.hpp"
 #include "../Utilites/Globals.hpp"
 
-class IWindow{
+class IWindow {
 public:
     sf::RenderWindow *renderWindow;
+
     virtual void handleEvents() = 0;
+
     virtual void draw() = 0;
-    Globals* globals;
+
+    Globals *globals;
 };
 
 #endif //PINBOARD_IWINDOW_HPP

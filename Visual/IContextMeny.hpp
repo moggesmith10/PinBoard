@@ -7,14 +7,15 @@
 
 #include "../Utilites/Globals.hpp"
 #include "IDrawable.hpp"
+#include "../Utilites/EventResponse.hpp"
 
 class IContextMenu : public IDrawable {
     std::vector<sf::Shape> shapes;
 public:
-    virtual bool handleEvent(sf::Event event) = 0;
+    virtual void handleEvent(sf::Event event, EventResponse *response) = 0;
 
 protected:
-    Globals* globals;
+    Globals *globals;
 };
 
 #endif //PINBOARD_ICONTEXTMENY_HPP

@@ -8,12 +8,14 @@
 
 #include "../../IMainWindow.hpp"
 
-class DefaultMainWindow : public IMainWindow
-{
+class DefaultMainWindow : public IMainWindow {
 public:
     DefaultMainWindow(Globals *globals);
+
     void handleEvents() override;
+
     void draw() override;
+
 private:
     void createContextMenu(sf::Vector2f position);
 };

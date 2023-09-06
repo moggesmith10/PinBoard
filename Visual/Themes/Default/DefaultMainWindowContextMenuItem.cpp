@@ -6,7 +6,7 @@
 #include "../../../Utilites/CursorUtilities.hpp"
 
 DefaultMainWindowContextMenuItem::DefaultMainWindowContextMenuItem(
-                                                                   std::string text, Globals *globals, sf::RenderWindow *renderWindow, sf::Vector2f position) {
+        std::string text, Globals *globals, sf::RenderWindow *renderWindow, sf::Vector2f position) {
     background = sf::RectangleShape(sf::Vector2f(180, 40));
     background.setPosition(position);
     this->renderWindow = renderWindow;
@@ -17,18 +17,18 @@ DefaultMainWindowContextMenuItem::DefaultMainWindowContextMenuItem(
 }
 
 void DefaultMainWindowContextMenuItem::draw() {
-     renderWindow->draw(background);
-     renderWindow->draw(text);
+    renderWindow->draw(background);
+    renderWindow->draw(text);
 }
 
 bool DefaultMainWindowContextMenuItem::isHovered(sf::Vector2f position) {
     return background.getGlobalBounds().contains(position);
 }
 
-bool DefaultMainWindowContextMenuItem::handleEvent(sf::Event event) {
+void DefaultMainWindowContextMenuItem::handleEvent(sf::Event event, EventResponse *response) {
 
     bool hovered;
-    if(event.type == sf::Event::MouseMoved) {
+    if (event.type == sf::Event::MouseMoved) {
         hovered = isHovered(sf::Vector2f(event.mouseMove.x, event.mouseMove.y));
 
         if (hovered) {
@@ -36,17 +36,13 @@ bool DefaultMainWindowContextMenuItem::handleEvent(sf::Event event) {
         } else {
             background.setFillColor(sf::Color(255, 255, 255));
         }
-    }
-
-    else if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+    } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
         hovered = isHovered(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
-        if(hovered){
+        if (hovered) {
             background.setFillColor(sf::Color(150, 150, 170));
-            return true;
+            response->setPress(true);
         }
     }
-
-    return false;
 }
 
 DefaultMainWindowContextMenuItem::DefaultMainWindowContextMenuItem() = default;
