@@ -41,3 +41,11 @@ void *EventResponse::getSelectedTextBox() {
         return nullptr;
     return selectedTextBox;
 }
+
+void EventResponse::setDeleteSelectedNodes(bool value) {
+    response[DELETESELECTEDNODES] = value;
+}
+
+bool EventResponse::getDeleteSelectedNodes() {
+    return response[DELETESELECTEDNODES];
+}

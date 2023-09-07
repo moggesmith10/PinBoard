@@ -20,6 +20,7 @@ public:
 
 private:
     sf::RectangleShape background;
+    sf::RectangleShape border;
 };
 
 

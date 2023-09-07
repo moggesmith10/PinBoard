@@ -14,6 +14,7 @@ public:
     IContextMenu *contextMenu = nullptr;
     ITextBox *textBox = nullptr;
     std::vector<INode *> nodes;
+    std::vector<INode *> selectedNodes;
 };
 
 #endif //PINBOARD_IMAINWINDOW_HPP

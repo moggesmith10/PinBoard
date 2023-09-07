@@ -28,6 +28,7 @@ public:
     sf::RenderWindow *renderWindow;
     IMainWindow *mainWindow;
     DefaultMainWindowContextMenuItem addNodeButton;
+    DefaultMainWindowContextMenuItem deleteNodesButton;
 };
 
 
