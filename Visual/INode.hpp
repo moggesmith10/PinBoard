@@ -16,7 +16,7 @@ protected:
     ITextBox *content;
 public:
     virtual void draw(sf::RenderWindow *renderWindow) = 0;
-
+    bool selected = false;
     virtual void handleEvents(sf::Event event, EventResponse* response) = 0;
 };
 

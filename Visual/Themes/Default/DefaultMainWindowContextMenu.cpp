@@ -8,6 +8,7 @@
 void DefaultMainWindowContextMenu::draw(sf::RenderWindow *renderWindow) {
     renderWindow->draw(background);
     addNodeButton.draw();
+    deleteNodesButton.draw();
 }
 
 DefaultMainWindowContextMenu::DefaultMainWindowContextMenu(sf::RenderWindow *renderWindow, sf::Vector2f position,
@@ -20,6 +21,8 @@ DefaultMainWindowContextMenu::DefaultMainWindowContextMenu(sf::RenderWindow *ren
     this->mainWindow = mainWindow;
     this->addNodeButton = DefaultMainWindowContextMenuItem("Add Node", globals, renderWindow,
                                                            sf::Vector2f(position.x + 10, position.y + 10));
+    this->deleteNodesButton = DefaultMainWindowContextMenuItem("Delete Nodes", globals, renderWindow,
+                                                               sf::Vector2f(position.x + 10, position.y + 50));
 }
 
 DefaultMainWindowContextMenu::~DefaultMainWindowContextMenu() {
@@ -38,5 +41,12 @@ void DefaultMainWindowContextMenu::handleEvent(sf::Event event, EventResponse *r
         if (!addNodeResponse->getPress()) {
             response->setDelete(true);
         }
+    }
+
+    EventResponse *deleteNodesResponse = new EventResponse();
+    deleteNodesButton.handleEvent(event, deleteNodesResponse);
+    if (deleteNodesResponse->getPress()) {
+        response->setDeleteSelectedNodes(true);
+        response->setDelete(true);
     }
 }

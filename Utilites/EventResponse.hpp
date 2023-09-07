@@ -22,6 +22,10 @@ public:
 
     bool getPress();
 
+    void setDeleteSelectedNodes(bool value);
+
+    bool getDeleteSelectedNodes();
+
     void setSelectedTextBox(void *textBox);
     void *getSelectedTextBox();
 
@@ -32,6 +36,7 @@ private:
         DELETE,
         PRESS,
         SELECTTEXTBOX,
+        DELETESELECTEDNODES,
         RESPONSEVALUESMAX
     };
     std::bitset<RESPONSEVALUESMAX> response;

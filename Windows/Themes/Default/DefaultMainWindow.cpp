@@ -26,11 +26,27 @@ void DefaultMainWindow::handleEvents() {
                 contextMenu = nullptr;
             }
         }
+        if(response->getDeleteSelectedNodes()){
+            for(INode* node: selectedNodes){
+                delete node;
+                nodes.erase(std::remove(nodes.begin(), nodes.end(), node), nodes.end());
+            }
+            selectedNodes.clear();
+        }
         response->clear();
 
         if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Right) {
                 createContextMenu(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
+            }
+            else {
+                if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ||
+                      sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))) {
+                    for (INode *selectedNode: this->nodes) {
+                        selectedNode->selected = false;
+                    }
+                    selectedNodes.clear();
+                }
             }
         }
 
@@ -38,11 +54,22 @@ void DefaultMainWindow::handleEvents() {
 
         for(INode* node: this->nodes){
             node->handleEvents(event, response);
-            if(response->getSelectedTextBox() != nullptr){
-                if(this->textBox != nullptr){
+            if(response->getSelectedTextBox() != nullptr) {
+                if (this->textBox != nullptr) {
                     this->textBox->isFocused = false;
                 }
                 this->textBox = static_cast<ITextBox *>(response->getSelectedTextBox());
+            }
+            if(response->getPress()){
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)){
+                    selectedNodes.push_back(node);
+                    node->selected = true;
+                }
+                else{
+
+                    selectedNodes.push_back(node);
+                    node->selected = true;
+                }
             }
         }
 
