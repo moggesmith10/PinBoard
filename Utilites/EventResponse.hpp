@@ -22,24 +22,30 @@ public:
 
     bool getPress();
 
+    bool getConnectTo();
+
+    void setConnectTo(void  *object);
+
     void setDeleteSelectedNodes(bool value);
 
     bool getDeleteSelectedNodes();
 
-    void setSelectedTextBox(void *textBox);
-    void *getSelectedTextBox();
+    void setSelectTextBox(void *object);
+    bool getSelectTextBox();
+    void *getSelectedObject();
 
 private:
 
-    void *selectedTextBox;
+    void *selectedObject;
     enum responseValues {
         DELETE,
         PRESS,
-        SELECTTEXTBOX,
-        DELETESELECTEDNODES,
-        RESPONSEVALUESMAX
+        SELECT_TEXTBOX,
+        DELETE_SELECTED_NODES,
+        CONNECT_TO,
+        RESPONSE_VALUES_MAX
     };
-    std::bitset<RESPONSEVALUESMAX> response;
+    std::bitset<RESPONSE_VALUES_MAX> response;
 };
 
 

@@ -22,7 +22,7 @@ void DefaultTextBox::handleEvent(sf::Event event, EventResponse *response) {
     if (event.type == sf::Event::TextEntered && isFocused) {
         if (event.text.unicode < 128) {
             if (event.text.unicode == 8) {
-                if (content.size() > 0) {
+                if (!content.empty()) {
                     content.pop_back();
                 }
             } else {

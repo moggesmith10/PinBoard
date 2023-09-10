@@ -30,7 +30,11 @@ add_executable(PinBoard main.cpp
         Utilites/EventResponse.hpp
         Visual/ITextBox.hpp
         Visual/Themes/Default/DefaultTextBox.cpp
-        Visual/Themes/Default/DefaultTextBox.hpp)
+        Visual/Themes/Default/DefaultTextBox.hpp
+        Visual/IConnection.hpp
+        Visual/Themes/Default/DefaultConnection.cpp
+        Visual/Themes/Default/DefaultConnection.hpp
+        Visual/IEventHandler.hpp)
 
 add_custom_command(TARGET PinBoard PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory

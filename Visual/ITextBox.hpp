@@ -10,11 +10,10 @@
 #include <SFML/Graphics/Text.hpp>
 #include "IDrawable.hpp"
 #include "../Utilites/EventResponse.hpp"
+#include "IEventHandler.hpp"
 
-class ITextBox : public IDrawable{
+class ITextBox : public IDrawable, public IEventHandler {
 public:
-    virtual void handleEvent(sf::Event event, EventResponse *response) = 0;
-    virtual void draw(sf::RenderWindow *renderWindow) override = 0;
     bool isFocused = false;
     sf::Text text;
     std::string content;
