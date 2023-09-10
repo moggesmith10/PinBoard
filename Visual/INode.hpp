@@ -8,16 +8,16 @@
 
 #include "IDrawable.hpp"
 #include "ITextBox.hpp"
+#include "IEventHandler.hpp"
 
-class INode : public IDrawable {
+class INode : public IDrawable, public IEventHandler{
 
 protected:
     ITextBox *title;
     ITextBox *content;
 public:
-    virtual void draw(sf::RenderWindow *renderWindow) = 0;
     bool selected = false;
-    virtual void handleEvents(sf::Event event, EventResponse* response) = 0;
+    sf::Vector2f center;
 };
 
 

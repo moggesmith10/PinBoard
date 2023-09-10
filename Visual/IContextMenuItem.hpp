@@ -8,17 +8,11 @@
 
 #include "../Utilites/Globals.hpp"
 #include "../Utilites/EventResponse.hpp"
+#include "IEventHandler.hpp"
 
-class IContextMenuItem {
+class IContextMenuItem : public IEventHandler{
 public:
     virtual bool isHovered(sf::Vector2f position) = 0;
-
-    /**
-     * @brief Handles events for the context menu item
-     * @param event Event
-     * @return Was item clicked
-     */
-    virtual void handleEvent(sf::Event event, EventResponse *response) = 0;
 
     virtual void draw() = 0;
 

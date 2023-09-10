@@ -8,6 +8,7 @@
 #include "IWindow.hpp"
 #include "../Visual/IContextMeny.hpp"
 #include "../Visual/INode.hpp"
+#include "../Visual/IConnection.hpp"
 
 class IMainWindow : public IWindow {
 public:
@@ -15,6 +16,7 @@ public:
     ITextBox *textBox = nullptr;
     std::vector<INode *> nodes;
     std::vector<INode *> selectedNodes;
+    std::vector<IConnection *> connections;
 };
 
 #endif //PINBOARD_IMAINWINDOW_HPP
