@@ -23,34 +23,39 @@ DefaultNode::DefaultNode(sf::Vector2f position, Globals *globals) {
     background.setPosition(position.x + 5, position.y + 5);
     title = new DefaultTextBox(globals, sf::Vector2f(position.x + 10, position.y + 10));
     content = new DefaultTextBox(globals, sf::Vector2f(position.x + 10, position.y + 50));
+    center = sf::Vector2f(position.x + 250, position.y + 250);
 }
 
-void DefaultNode::handleEvents(sf::Event event, EventResponse *response) {
+void DefaultNode::handleEvent(sf::Event event, EventResponse *response) {
     EventResponse* internalResponse = new EventResponse();
     if (event.type == sf::Event::MouseButtonPressed){
+        if(background.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))){
         if(event.mouseButton.button == sf::Mouse::Left) {
-            if (background.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
                 title->handleEvent(event, internalResponse);
-                response->setPress(true);
                 if (internalResponse->getPress()) {
-                    response->setSelectedTextBox(title);
+                    response->setSelectTextBox(title);
                 }
                 internalResponse->clear();
                 content->handleEvent(event, internalResponse);
                 if (internalResponse->getPress()) {
-                    response->setSelectedTextBox(content);
-                }
+                    response->setSelectTextBox(content);
             }
         }
-        else if(event.mouseButton.button == sf::Mouse::Right){
-            if(background.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))){
-                response->setPress(true);
-            }
+        response->setPress(true);
         }
     }
     else{
         title->handleEvent(event, internalResponse);
         content->handleEvent(event, internalResponse);
     }
+
+    if(event.type == sf::Event::MouseButtonReleased){
+        if(event.mouseButton.button == sf::Mouse::Left){
+            if(background.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))){
+                response->setConnectTo(this);
+            }
+        }
+    }
+
     delete internalResponse;
 }

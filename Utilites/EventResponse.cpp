@@ -17,6 +17,7 @@ EventResponse::EventResponse() {
 }
 
 void EventResponse::clear() {
+    selectedObject = nullptr;
     response.reset();
 }
 
@@ -28,24 +29,69 @@ bool EventResponse::getPress() {
     return response[PRESS];
 }
 
-void EventResponse::setSelectedTextBox(void *textBox) {
-    selectedTextBox = textBox;
-    if(textBox == nullptr)
-        response[SELECTTEXTBOX] = false;
+void EventResponse::setSelectTextBox(void *object) {
+    selectedObject = object;
+    if(object == nullptr)
+        response[SELECT_TEXTBOX] = false;
     else
-        response[SELECTTEXTBOX] = true;
+        response[SELECT_TEXTBOX] = true;
 }
 
-void *EventResponse::getSelectedTextBox() {
-    if(!response[SELECTTEXTBOX])
+void *EventResponse::getSelectedObject() {
+    if(!response[SELECT_TEXTBOX])
         return nullptr;
-    return selectedTextBox;
+    return selectedObject;
 }
 
 void EventResponse::setDeleteSelectedNodes(bool value) {
-    response[DELETESELECTEDNODES] = value;
+    response[DELETE_SELECTED_NODES] = value;
 }
 
 bool EventResponse::getDeleteSelectedNodes() {
-    return response[DELETESELECTEDNODES];
+    return response[DELETE_SELECTED_NODES];
+}
+
+bool EventResponse::getConnectTo() {
+    return response[CONNECT_TO];
+}
+
+void EventResponse::setConnectTo(void *object) {
+    selectedObject = object;
+    if(object == nullptr)
+        response[CONNECT_TO] = false;
+    else
+        response[CONNECT_TO] = true;
+}
+
+bool EventResponse::getSelectTextBox() {
+    return response[SELECT_TEXTBOX];
+}
+
+bool EventResponse::getDeleteSelectedConnections() {
+    return response[DELETE_SELECTED_CONNECTIONS];
+}
+
+void EventResponse::setDeleteSelectedConnections(bool value) {
+    response[DELETE_SELECTED_CONNECTIONS] = value;
+}
+
+void EventResponse::setDeselectTextbox(bool value) {
+    response[DESELECT_TETXBOX] = value;
+}
+
+bool EventResponse::getDeselectTextbox() {
+    return response[DESELECT_TETXBOX];
+}
+
+sf::Color EventResponse::changeConnectionColor() {
+    return sf::Color();
+}
+
+void EventResponse::setChangeConnectionColor(sf::Color color) {
+    this->connectionColor = color;
+    response[CHANGE_CONNECTION_COLOR] = true;
+}
+
+bool EventResponse::getChangeConnectionColor() {
+    return response[CHANGE_CONNECTION_COLOR];
 }

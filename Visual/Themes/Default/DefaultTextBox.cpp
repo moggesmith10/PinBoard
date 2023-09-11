@@ -15,6 +15,12 @@ DefaultTextBox::DefaultTextBox(Globals *globals, sf::Vector2f position) {
 }
 
 void DefaultTextBox::draw(sf::RenderWindow *renderWindow) {
+    if(isFocused){
+        text.setFillColor(sf::Color::Red);
+    }
+    else{
+        text.setFillColor(sf::Color::Black);
+    }
     renderWindow->draw(text);
 }
 
@@ -22,13 +28,17 @@ void DefaultTextBox::handleEvent(sf::Event event, EventResponse *response) {
     if (event.type == sf::Event::TextEntered && isFocused) {
         if (event.text.unicode < 128) {
             if (event.text.unicode == 8) {
-                if (content.size() > 0) {
+                if (!content.empty()) {
                     content.pop_back();
                 }
             } else {
                 content += static_cast<char>(event.text.unicode);
             }
             text.setString(content);
+        }
+        if(event.text.unicode == 13){
+            isFocused = false;
+            response->setDeleteSelectedNodes(true);
         }
     }
     else if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){

@@ -7,6 +7,8 @@
 
 
 #include "../../IMainWindow.hpp"
+#include "../../../Visual/Themes/Default/DefaultMainWindowContextMenu.hpp"
+#include "../../../Visual/Themes/Default/DefaultConnection.hpp"
 
 class DefaultMainWindow : public IMainWindow {
 public:
@@ -18,6 +20,9 @@ public:
 
 private:
     void createContextMenu(sf::Vector2f position);
+    void deleteConnectionsToNode(INode *node);
+    bool isConnectionUnique(INode *node1, INode *node2);
+    sf::Color selectedConnectionColor = sf::Color::Red;
 };
 
 

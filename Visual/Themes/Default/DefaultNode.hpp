@@ -16,7 +16,7 @@ public:
 
     DefaultNode(sf::Vector2f position, Globals *globals);
 
-    void handleEvents(sf::Event event, EventResponse* response) override;
+    void handleEvent(sf::Event event, EventResponse* response) override;
 
 private:
     sf::RectangleShape background;

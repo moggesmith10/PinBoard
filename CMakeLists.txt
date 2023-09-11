@@ -11,7 +11,7 @@ add_executable(PinBoard main.cpp
         Windows/Themes/Default/DefaultMainWindow.cpp
         Windows/Themes/Default/DefaultMainWindow.hpp
         Visual/IDrawable.hpp
-        Visual/IContextMeny.hpp
+        Visual/IContextMenu.hpp
         Visual/Themes/Default/DefaultMainWindowContextMenu.cpp
         Visual/Themes/Default/DefaultMainWindowContextMenu.hpp
         Utilites/CursorUtilities.cpp
@@ -30,7 +30,15 @@ add_executable(PinBoard main.cpp
         Utilites/EventResponse.hpp
         Visual/ITextBox.hpp
         Visual/Themes/Default/DefaultTextBox.cpp
-        Visual/Themes/Default/DefaultTextBox.hpp)
+        Visual/Themes/Default/DefaultTextBox.hpp
+        Visual/IConnection.hpp
+        Visual/Themes/Default/DefaultConnection.cpp
+        Visual/Themes/Default/DefaultConnection.hpp
+        Visual/IEventHandler.hpp
+        Visual/ISelectable.hpp
+        Visual/Themes/Default/DefaultColorSelector.cpp
+        Visual/Themes/Default/DefaultColorSelector.hpp
+        Visual/IColorSelector.hpp)
 
 add_custom_command(TARGET PinBoard PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory

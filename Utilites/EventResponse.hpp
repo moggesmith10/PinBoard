@@ -7,6 +7,7 @@
 
 
 #include <bitset>
+#include <SFML/Graphics/Color.hpp>
 
 class EventResponse {
 public:
@@ -22,24 +23,47 @@ public:
 
     bool getPress();
 
+    bool getConnectTo();
+
+    void setConnectTo(void  *object);
+
+    void setDeselectTextbox(bool value);
+    bool getDeselectTextbox();
+
     void setDeleteSelectedNodes(bool value);
+
+    void setChangeConnectionColor(sf::Color color);
+
+    bool getChangeConnectionColor();
+
+    sf::Color changeConnectionColor();
 
     bool getDeleteSelectedNodes();
 
-    void setSelectedTextBox(void *textBox);
-    void *getSelectedTextBox();
+    bool getDeleteSelectedConnections();
+    void setDeleteSelectedConnections(bool value);
+
+    void setSelectTextBox(void *object);
+    bool getSelectTextBox();
+    void *getSelectedObject();
+
+    sf::Color connectionColor;
 
 private:
 
-    void *selectedTextBox;
+    void *selectedObject;
     enum responseValues {
         DELETE,
         PRESS,
-        SELECTTEXTBOX,
-        DELETESELECTEDNODES,
-        RESPONSEVALUESMAX
+        SELECT_TEXTBOX,
+        DELETE_SELECTED_NODES,
+        DELETE_SELECTED_CONNECTIONS,
+        CONNECT_TO,
+        DESELECT_TETXBOX,
+        CHANGE_CONNECTION_COLOR,
+        RESPONSE_VALUES_MAX
     };
-    std::bitset<RESPONSEVALUESMAX> response;
+    std::bitset<RESPONSE_VALUES_MAX> response;
 };
 
 

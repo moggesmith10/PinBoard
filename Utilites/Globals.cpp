@@ -7,3 +7,7 @@
 Globals::Globals() {
     fontUtilites = new FontUtilities();
 }
+
+Globals::~Globals() {
+    delete fontUtilites;
+}

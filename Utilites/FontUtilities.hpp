@@ -19,7 +19,7 @@ public:
     };
 
     FontUtilities();
-
+    ~FontUtilities();
     std::vector<sf::Font *> fontsArray;
 private:
     sf::Font *loadFont(std::string family, std::string name);

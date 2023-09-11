@@ -11,7 +11,7 @@
 class Globals {
 public:
     Globals();
-
+    ~Globals();
     FontUtilities *fontUtilites;
 };
 
