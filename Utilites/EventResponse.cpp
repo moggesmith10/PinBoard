@@ -17,6 +17,7 @@ EventResponse::EventResponse() {
 }
 
 void EventResponse::clear() {
+    selectedObject = nullptr;
     response.reset();
 }
 
@@ -64,4 +65,33 @@ void EventResponse::setConnectTo(void *object) {
 
 bool EventResponse::getSelectTextBox() {
     return response[SELECT_TEXTBOX];
+}
+
+bool EventResponse::getDeleteSelectedConnections() {
+    return response[DELETE_SELECTED_CONNECTIONS];
+}
+
+void EventResponse::setDeleteSelectedConnections(bool value) {
+    response[DELETE_SELECTED_CONNECTIONS] = value;
+}
+
+void EventResponse::setDeselectTextbox(bool value) {
+    response[DESELECT_TETXBOX] = value;
+}
+
+bool EventResponse::getDeselectTextbox() {
+    return response[DESELECT_TETXBOX];
+}
+
+sf::Color EventResponse::changeConnectionColor() {
+    return sf::Color();
+}
+
+void EventResponse::setChangeConnectionColor(sf::Color color) {
+    this->connectionColor = color;
+    response[CHANGE_CONNECTION_COLOR] = true;
+}
+
+bool EventResponse::getChangeConnectionColor() {
+    return response[CHANGE_CONNECTION_COLOR];
 }

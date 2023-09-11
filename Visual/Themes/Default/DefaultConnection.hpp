@@ -14,6 +14,11 @@ public:
     void draw(sf::RenderWindow *renderWindow) override;
     void handleEvent(sf::Event event, EventResponse *response) override;
     sf::Vertex line[2];
+    sf::Vertex selectedLine[4];
+    const int thickness = 0;//Unused
+    const int thicknessSelected = 4;
+    const int hitbox = 10;
+    void changeColor(sf::Color color) override;
 };
 
 

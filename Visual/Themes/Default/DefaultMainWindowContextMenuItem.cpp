@@ -7,7 +7,7 @@
 
 DefaultMainWindowContextMenuItem::DefaultMainWindowContextMenuItem(
         std::string text, Globals *globals, sf::RenderWindow *renderWindow, sf::Vector2f position) {
-    background = sf::RectangleShape(sf::Vector2f(180, 40));
+    background = sf::RectangleShape(sf::Vector2f(230, 40));
     background.setPosition(position);
     this->renderWindow = renderWindow;
     this->globals = globals;

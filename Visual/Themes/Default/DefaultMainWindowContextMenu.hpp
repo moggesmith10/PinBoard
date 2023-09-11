@@ -7,16 +7,17 @@
 
 
 #include <SFML/Graphics.hpp>
-#include "../../IContextMeny.hpp"
+#include "../../IContextMenu.hpp"
 #include "../../../Utilites/Globals.hpp"
 #include "../../IContextMenuItem.hpp"
 #include "DefaultMainWindowContextMenuItem.hpp"
 #include "../../../Windows/IMainWindow.hpp"
+#include "DefaultColorSelector.hpp"
 
 class DefaultMainWindowContextMenu : public IContextMenu {
 public:
     DefaultMainWindowContextMenu(sf::RenderWindow *renderWindow, sf::Vector2f position, Globals *globals,
-                                 IMainWindow *mainWindow);
+                                 IMainWindow *mainWindow, u_char context, sf::Color connectionColor);
 
     void draw(sf::RenderWindow *renderWindow) override;
 
@@ -29,6 +30,16 @@ public:
     IMainWindow *mainWindow;
     DefaultMainWindowContextMenuItem addNodeButton;
     DefaultMainWindowContextMenuItem deleteNodesButton;
+    DefaultMainWindowContextMenuItem deleteConnectionsButton;
+    DefaultMainWindowContextMenuItem deleteBothButton;
+    DefaultColorSelector redColorSelector;
+    DefaultColorSelector blueColorSelector;
+    DefaultColorSelector greenColorSelector;
+    DefaultColorSelector yellowColorSelector;
+    DefaultColorSelector orangeColorSelector;
+    DefaultColorSelector purpleColorSelector;
+
+    u_char context;
 };
 
 
