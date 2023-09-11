@@ -18,3 +18,9 @@ sf::Font *FontUtilities::loadFont(std::string family, std::string name) {
     font->loadFromFile("Fonts/" + family + "/" + name + ".ttf");
     return font;
 }
+
+FontUtilities::~FontUtilities() {
+    for (auto &font : this->fontsArray) {
+        delete font;
+    }
+}

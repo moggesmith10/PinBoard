@@ -21,6 +21,12 @@ void DefaultMainWindow::handleEvents() {
         EventResponse *response = new EventResponse();
         if (contextMenu != nullptr) {
             contextMenu->handleEvent(event, response);
+            if(response->getChangeConnectionColor()){
+                selectedConnectionColor = response->connectionColor;
+                for(IConnection* connection: selectedConnections){
+                    connection->changeColor(response->connectionColor);
+                }
+            }
             if (response->getDelete()) {
                 delete contextMenu;
                 contextMenu = nullptr;
@@ -34,6 +40,13 @@ void DefaultMainWindow::handleEvents() {
             }
             selectedNodes.clear();
         }
+        if(response->getDeleteSelectedConnections()){
+            for(IConnection* connection: selectedConnections){
+                delete connection;
+                connections.erase(std::remove(connections.begin(), connections.end(), connection), connections.end());
+            }
+            selectedConnections.clear();
+        }
         response->clear();
 
         if (event.type == sf::Event::MouseButtonPressed) {
@@ -46,7 +59,34 @@ void DefaultMainWindow::handleEvents() {
                     for (INode *selectedNode: this->nodes) {
                         selectedNode->selected = false;
                     }
+                    for(IConnection* selectedConnection: this->connections){
+                        selectedConnection->selected = false;
+                    }
                     selectedNodes.clear();
+                    selectedConnections.clear();
+                }
+            }
+        }
+
+        for(IConnection* connection: connections){
+            response->clear();
+            connection->handleEvent(event, response);
+            if(response->getPress()){
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)){
+                    selectedConnections.push_back(connection);
+                    connection->selected = true;
+                }
+                else{
+                    for(INode *selectedNode: this->selectedNodes){
+                        selectedNode->selected = false;
+                    }
+                    selectedNodes.clear();
+                    for(IConnection* selectedConnection: this->selectedConnections){
+                        selectedConnection->selected = false;
+                    }
+                    selectedConnections.clear();
+                    selectedConnections.push_back(connection);
+                    connection->selected = true;
                 }
             }
         }
@@ -66,6 +106,10 @@ void DefaultMainWindow::handleEvents() {
                     node->selected = true;
                 }
                 else{
+                    for(IConnection* selectedConnection: this->selectedConnections){
+                        selectedConnection->selected = false;
+                    }
+                    selectedConnections.clear();
                     for(INode* selectedNode: this->selectedNodes){
                         selectedNode->selected = false;
                     }
@@ -77,7 +121,9 @@ void DefaultMainWindow::handleEvents() {
             if(response->getConnectTo()){
                 if(selectedNodes.size() == 1 && selectedNodes[0] != node){
                     if(isConnectionUnique(selectedNodes[0], node)) {
-                        connections.push_back(new DefaultConnection(selectedNodes[0], node));
+                        DefaultConnection * connection = new DefaultConnection(selectedNodes[0], node);
+                        connections.push_back(connection);
+                        connection->changeColor(selectedConnectionColor);
                     }
                 }
             }
@@ -89,14 +135,14 @@ void DefaultMainWindow::handleEvents() {
 
 void DefaultMainWindow::draw() {
     this->renderWindow->clear(sf::Color::Black);
-    if (this->contextMenu != nullptr) {
-        this->contextMenu->draw(renderWindow);
-    }
     for (IConnection *connection: this->connections) {
         connection->draw(this->renderWindow);
     }
     for (INode *node: this->nodes) {
         node->draw(this->renderWindow);
+    }
+    if (this->contextMenu != nullptr) {
+        this->contextMenu->draw(renderWindow);
     }
     this->renderWindow->display();
 }
@@ -104,7 +150,21 @@ void DefaultMainWindow::draw() {
 void DefaultMainWindow::createContextMenu(sf::Vector2f position) {
     delete this->contextMenu;
 
-    this->contextMenu = new DefaultMainWindowContextMenu(this->renderWindow, position, globals, this);
+    u_char context = IContextMenu::NONE;
+
+    if(!selectedNodes.empty()){
+        context = IContextMenu::NODE;
+    }
+    if(!selectedConnections.empty()){
+        if(context == IContextMenu::NODE){
+            context = IContextMenu::BOTH;
+        }
+        else{
+            context = IContextMenu::CONNECTION;
+        }
+    }
+
+    this->contextMenu = new DefaultMainWindowContextMenu(this->renderWindow, position, globals, this, context, selectedConnectionColor);
 }
 
 void DefaultMainWindow::deleteConnectionsToNode(INode *node) {

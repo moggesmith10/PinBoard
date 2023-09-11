@@ -22,6 +22,7 @@ private:
     void createContextMenu(sf::Vector2f position);
     void deleteConnectionsToNode(INode *node);
     bool isConnectionUnique(INode *node1, INode *node2);
+    sf::Color selectedConnectionColor = sf::Color::Red;
 };
 
 
