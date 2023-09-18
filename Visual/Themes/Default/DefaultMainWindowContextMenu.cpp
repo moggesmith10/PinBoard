@@ -3,17 +3,19 @@
 //
 
 #include "DefaultMainWindowContextMenu.hpp"
-#include "DefaultNode.hpp"
+#include "DefaultTextNode.hpp"
+#include "DefaultImageNode.hpp"
 
 void DefaultMainWindowContextMenu::draw(sf::RenderWindow *renderWindow) {
     renderWindow->draw(background);
-    addNodeButton.draw();
+    addTextNodeButton.draw(renderWindow);
+    addImageNodeButton.draw(renderWindow);
     if(context == BOTH || context == NODE)
-        deleteNodesButton.draw();
+        deleteNodesButton.draw(renderWindow);
     if(context == BOTH || context == CONNECTION)
-        deleteConnectionsButton.draw();
+        deleteConnectionsButton.draw(renderWindow);
     if(context == BOTH)
-        deleteBothButton.draw();
+        deleteBothButton.draw(renderWindow);
     redColorSelector.draw(renderWindow);
     greenColorSelector.draw(renderWindow);
     blueColorSelector.draw(renderWindow);
@@ -31,8 +33,11 @@ DefaultMainWindowContextMenu::DefaultMainWindowContextMenu(sf::RenderWindow *ren
     this->globals = globals;
     this->mainWindow = mainWindow;
     int y = 50;
-    this->addNodeButton = DefaultMainWindowContextMenuItem("Add Node", globals, renderWindow,
-                                                           sf::Vector2f(position.x + 10, position.y + (y)));
+    this->addTextNodeButton = DefaultMainWindowContextMenuItem("Add Node", globals, renderWindow,
+                                                               sf::Vector2f(position.x + 10, position.y + (y)));
+    this->addImageNodeButton = DefaultMainWindowContextMenuItem("Add Image", globals, renderWindow,
+                                                                sf::Vector2f(position.x + 10, position.y + (y += 50)));
+
     if(context == BOTH || context == NODE) {
         this->deleteNodesButton = DefaultMainWindowContextMenuItem("Delete Nodes", globals, renderWindow,
                                                                    sf::Vector2f(position.x + 10, position.y + (y += 50)));
@@ -60,12 +65,20 @@ DefaultMainWindowContextMenu::~DefaultMainWindowContextMenu() {
 
 void DefaultMainWindowContextMenu::handleEvent(sf::Event event, EventResponse *response) {
     EventResponse *addNodeResponse = new EventResponse();
-    addNodeButton.handleEvent(event, addNodeResponse);
+    addTextNodeButton.handleEvent(event, addNodeResponse);
     if (addNodeResponse->getPress()) {
         mainWindow->nodes.insert(mainWindow->nodes.end(),
-                                 new DefaultNode(sf::Vector2f(event.mouseButton.x, event.mouseButton.y), globals));
+                                 new DefaultTextNode(sf::Vector2f(event.mouseButton.x, event.mouseButton.y), globals));
         response->setDelete(true);
     }
+    addNodeResponse->clear();
+    addImageNodeButton.handleEvent(event, addNodeResponse);
+    if (addNodeResponse->getPress()) {
+        mainWindow->nodes.insert(mainWindow->nodes.end(),
+                                 new DefaultImageNode(globals->textures[0], sf::Vector2f(event.mouseButton.x, event.mouseButton.y)));
+        response->setDelete(true);
+    }
+
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
         if (!addNodeResponse->getPress()) {
             response->setDelete(true);
@@ -135,5 +148,23 @@ void DefaultMainWindowContextMenu::handleEvent(sf::Event event, EventResponse *r
     }
     ColorSelectorResponse->clear();
     delete ColorSelectorResponse;
+
+}
+
+void DefaultMainWindowContextMenu::move(sf::Vector2f toMove) {
+    redColorSelector.move(toMove);
+    greenColorSelector.move(toMove);
+    blueColorSelector.move(toMove);
+    yellowColorSelector.move(toMove);
+    orangeColorSelector.move(toMove);
+    purpleColorSelector.move(toMove);
+    background.setPosition(background.getPosition() + toMove);
+    addTextNodeButton.move(toMove);
+    if(context == BOTH || context == NODE)
+        deleteNodesButton.move(toMove);
+    if(context == BOTH || context == CONNECTION)
+        deleteConnectionsButton.move(toMove);
+    if(context == BOTH)
+        deleteBothButton.move(toMove);
 
 }

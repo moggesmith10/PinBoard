@@ -7,7 +7,7 @@
 
 #include "IWindow.hpp"
 #include "../Visual/IContextMenu.hpp"
-#include "../Visual/INode.hpp"
+#include "../Visual/ITextNode.hpp"
 #include "../Visual/IConnection.hpp"
 
 class IMainWindow : public IWindow {

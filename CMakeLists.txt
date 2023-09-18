@@ -23,9 +23,9 @@ add_executable(PinBoard main.cpp
         Utilites/FontUtilities.hpp
         Utilites/Globals.cpp
         Utilites/Globals.hpp
-        Visual/INode.hpp
-        Visual/Themes/Default/DefaultNode.cpp
-        Visual/Themes/Default/DefaultNode.hpp
+        Visual/ITextNode.hpp
+        Visual/Themes/Default/DefaultTextNode.cpp
+        Visual/Themes/Default/DefaultTextNode.hpp
         Utilites/EventResponse.cpp
         Utilites/EventResponse.hpp
         Visual/ITextBox.hpp
@@ -38,11 +38,18 @@ add_executable(PinBoard main.cpp
         Visual/ISelectable.hpp
         Visual/Themes/Default/DefaultColorSelector.cpp
         Visual/Themes/Default/DefaultColorSelector.hpp
-        Visual/IColorSelector.hpp)
+        Visual/IColorSelector.hpp
+        Visual/IImageNode.hpp
+        Visual/Themes/Default/DefaultImageNode.cpp
+        Visual/Themes/Default/DefaultImageNode.hpp
+        Visual/INode.hpp)
 
 add_custom_command(TARGET PinBoard PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/Fonts/ $<TARGET_FILE_DIR:PinBoard>/Fonts)
+add_custom_command(TARGET PinBoard PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/Resources/ $<TARGET_FILE_DIR:PinBoard>/Resources)
 
 target_link_libraries(PinBoard PRIVATE sfml-audio sfml-graphics sfml-network sfml-system)
 

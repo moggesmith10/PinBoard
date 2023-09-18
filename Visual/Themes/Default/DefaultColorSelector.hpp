@@ -14,6 +14,7 @@ public:
     void handleEvent(sf::Event event, EventResponse *response) override;
     DefaultColorSelector(sf::Vector2f position, sf::Color color, bool selected);
     DefaultColorSelector() = default;
+    void move(sf::Vector2f toMove) override;
 private:
     sf::CircleShape colorCircle;
     sf::CircleShape background;

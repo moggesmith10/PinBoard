@@ -16,10 +16,6 @@ DefaultMainWindowContextMenuItem::DefaultMainWindowContextMenuItem(
     this->text.setFillColor(sf::Color::Black);
 }
 
-void DefaultMainWindowContextMenuItem::draw() {
-    renderWindow->draw(background);
-    renderWindow->draw(text);
-}
 
 bool DefaultMainWindowContextMenuItem::isHovered(sf::Vector2f position) {
     return background.getGlobalBounds().contains(position);
@@ -43,6 +39,16 @@ void DefaultMainWindowContextMenuItem::handleEvent(sf::Event event, EventRespons
             response->setPress(true);
         }
     }
+}
+
+void DefaultMainWindowContextMenuItem::move(sf::Vector2f toMove) {
+    background.setPosition(background.getPosition() + toMove);
+    text.setPosition(text.getPosition() + toMove);
+}
+
+void DefaultMainWindowContextMenuItem::draw(sf::RenderWindow *renderWindow) {
+    renderWindow->draw(background);
+    renderWindow->draw(text);
 }
 
 DefaultMainWindowContextMenuItem::DefaultMainWindowContextMenuItem() = default;

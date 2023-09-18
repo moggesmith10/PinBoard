@@ -13,7 +13,7 @@ class DefaultMainWindowContextMenuItem : public IContextMenuItem {
 public:
     bool isHovered(sf::Vector2f position) override;
 
-    void draw() override;
+    void draw(sf::RenderWindow *renderWindow) override;
 
     DefaultMainWindowContextMenuItem();
 
@@ -21,6 +21,8 @@ public:
                                      sf::Vector2f position);
 
     void handleEvent(sf::Event event, EventResponse *response) override;
+
+    void move(sf::Vector2f toMove) override;
 
 private:
     sf::RenderWindow *renderWindow;

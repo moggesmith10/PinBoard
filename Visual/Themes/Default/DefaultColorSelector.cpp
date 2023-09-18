@@ -34,3 +34,8 @@ void DefaultColorSelector::handleEvent(sf::Event event, EventResponse *response)
         }
     }
 }
+
+void DefaultColorSelector::move(sf::Vector2f toMove) {
+    colorCircle.setPosition(colorCircle.getPosition() + toMove);
+    background.setPosition(background.getPosition() + toMove);
+}

@@ -51,3 +51,7 @@ void DefaultTextBox::handleEvent(sf::Event event, EventResponse *response) {
         }
     }
 }
+
+void DefaultTextBox::move(sf::Vector2f toMove) {
+    text.setPosition(text.getPosition() + toMove);
+}
