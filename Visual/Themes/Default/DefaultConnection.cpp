@@ -45,3 +45,25 @@ void DefaultConnection::changeColor(sf::Color color) {
     selectedLine[2].color = color;
     selectedLine[3].color = color;
 }
+
+void DefaultConnection::move(sf::Vector2f toMove) {
+    line[0].position += toMove;
+    line[1].position += toMove;
+    selectedLine[0].position += toMove;
+    selectedLine[1].position += toMove;
+    selectedLine[2].position += toMove;
+    selectedLine[3].position += toMove;
+}
+
+void DefaultConnection::move(sf::Vector2f toMove, INode *node) {
+    if(node == node1){
+        line[0].position += toMove;
+        selectedLine[0].position += toMove;
+        selectedLine[1].position += toMove;
+    }
+    else if(node == node2){
+        line[1].position += toMove;
+        selectedLine[2].position += toMove;
+        selectedLine[3].position += toMove;
+    }
+}

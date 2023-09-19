@@ -47,6 +47,9 @@ public:
     bool getSelectTextBox();
     void *getSelectedObject();
 
+    void setMoveNode(bool value);
+    bool getMoveNode();
+
     sf::Color connectionColor;
 
 private:
@@ -61,6 +64,7 @@ private:
         CONNECT_TO,
         DESELECT_TETXBOX,
         CHANGE_CONNECTION_COLOR,
+        MOVE_NODE,
         RESPONSE_VALUES_MAX
     };
     std::bitset<RESPONSE_VALUES_MAX> response;

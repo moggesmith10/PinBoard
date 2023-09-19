@@ -95,3 +95,11 @@ void EventResponse::setChangeConnectionColor(sf::Color color) {
 bool EventResponse::getChangeConnectionColor() {
     return response[CHANGE_CONNECTION_COLOR];
 }
+
+void EventResponse::setMoveNode(bool value) {
+    response[MOVE_NODE] = value;
+}
+
+bool EventResponse::getMoveNode() {
+    return response[MOVE_NODE];
+}

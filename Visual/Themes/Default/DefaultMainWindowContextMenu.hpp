@@ -25,10 +25,13 @@ public:
 
     void handleEvent(sf::Event event, EventResponse *response) override;
 
+    void move(sf::Vector2f toMove) override;
+
     sf::RectangleShape background;
     sf::RenderWindow *renderWindow;
     IMainWindow *mainWindow;
-    DefaultMainWindowContextMenuItem addNodeButton;
+    DefaultMainWindowContextMenuItem addTextNodeButton;
+    DefaultMainWindowContextMenuItem addImageNodeButton;
     DefaultMainWindowContextMenuItem deleteNodesButton;
     DefaultMainWindowContextMenuItem deleteConnectionsButton;
     DefaultMainWindowContextMenuItem deleteBothButton;

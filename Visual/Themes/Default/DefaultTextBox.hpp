@@ -17,6 +17,8 @@ public:
     void handleEvent(sf::Event event, EventResponse *response) override;
 
     void draw(sf::RenderWindow *renderWindow) override;
+
+    void move(sf::Vector2f) override;
 };
 
 

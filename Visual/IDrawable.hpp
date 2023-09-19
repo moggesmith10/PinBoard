@@ -9,6 +9,7 @@
 class IDrawable {
 public:
     virtual void draw(sf::RenderWindow *renderWindow) = 0;
+    virtual void move(sf::Vector2f toMove) = 0;
 
     IDrawable() = default;
 

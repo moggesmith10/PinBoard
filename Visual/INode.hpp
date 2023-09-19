@@ -1,5 +1,5 @@
 //
-// Created by hakkerboi on 9/5/23.
+// Created by hakkerboi on 9/18/23.
 //
 
 #ifndef PINBOARD_INODE_HPP
@@ -7,15 +7,10 @@
 
 
 #include "IDrawable.hpp"
-#include "ITextBox.hpp"
 #include "IEventHandler.hpp"
 #include "ISelectable.hpp"
 
-class INode : public IDrawable, public IEventHandler, public ISelectable{
-
-protected:
-    ITextBox *title;
-    ITextBox *content;
+class INode : public IDrawable, public IEventHandler, public ISelectable {
 public:
     sf::Vector2f center;
 };
