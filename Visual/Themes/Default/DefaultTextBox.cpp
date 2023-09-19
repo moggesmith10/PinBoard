@@ -4,13 +4,13 @@
 
 #include "DefaultTextBox.hpp"
 
-DefaultTextBox::DefaultTextBox(Globals *globals, sf::Vector2f position) {
+DefaultTextBox::DefaultTextBox(Globals *globals, sf::Vector2f position, std::string content) {
     text.setFont(*globals->fontUtilites->getFont(FontUtilities::NotoSansMedium));
     text.setCharacterSize(24);
     text.setFillColor(sf::Color::Black);
     text.setStyle(sf::Text::Regular);
     text.setPosition(position);
-    content = "Test";
+    this->content = content;
     text.setString(content);
 }
 

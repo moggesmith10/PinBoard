@@ -68,8 +68,8 @@ void DefaultTextNode::move(sf::Vector2f toMove) {
     center += toMove;
 }
 
-bool DefaultTextNode::deserialize(std::byte *data) {
-    std::string info = (char *) data;
+bool DefaultTextNode::deserialize(std::vector<std::byte> data) {
+    std::string info = (char *) data.data();
     std::string theme = info.substr(info.find(':'), info.find(';'));
     info = info.substr(info.find(';') + 1);
     std::string position = info.substr(info.find(':'), info.find(';'));
@@ -91,7 +91,7 @@ bool DefaultTextNode::deserialize(std::byte *data) {
     return true;
 }
 
-std::byte *DefaultTextNode::serialize() {
+std::vector<std::byte> DefaultTextNode::serialize() {
     std::vector <std::byte> bytes;
 
     std::string info = std::string("theme") + SERIALIZEABLE_VALUE_DEFINER + "default" + SERIALIZEABLE_VALUE_ENDER +
@@ -101,7 +101,7 @@ std::byte *DefaultTextNode::serialize() {
 
     bytes.insert(bytes.end(), (std::byte *) info.c_str(), (std::byte *) info.c_str() + info.length());
 
-    bytes.insert(bytes.end(), (std::byte *) &SERIALIZEABLE_OBJECT_DELIMITER, (std::byte *) SERIALIZEABLE_OBJECT_DELIMITER + sizeof(SERIALIZEABLE_OBJECT_DELIMITER));
+    bytes.insert(bytes.end(), (std::byte *) &SERIALIZEABLE_OBJECT_DELIMITER, (std::byte *) SERIALIZEABLE_OBJECT_DELIMITER + 1);
 
-    return bytes.data();
+    return bytes;
 }

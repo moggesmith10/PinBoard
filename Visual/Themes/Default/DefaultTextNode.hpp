@@ -20,8 +20,8 @@ public:
 
     void move(sf::Vector2f toMove) override;
 
-    bool deserialize(std::byte* data) override;
-    std::byte * serialize() override;
+    bool deserialize(std::vector<std::byte> data) override;
+    std::vector<std::byte> serialize() override;
 private:
     sf::RectangleShape background;
     sf::RectangleShape border;

@@ -16,6 +16,9 @@ void DefaultMainWindowContextMenu::draw(sf::RenderWindow *renderWindow) {
         deleteConnectionsButton.draw(renderWindow);
     if(context == BOTH)
         deleteBothButton.draw(renderWindow);
+
+saveLoadButton.draw(renderWindow);
+
     redColorSelector.draw(renderWindow);
     greenColorSelector.draw(renderWindow);
     blueColorSelector.draw(renderWindow);
@@ -49,6 +52,9 @@ DefaultMainWindowContextMenu::DefaultMainWindowContextMenu(sf::RenderWindow *ren
         this->deleteBothButton = DefaultButton("Delete Both", globals, renderWindow,
                                                sf::Vector2f(position.x + 10, position.y + (y += 50)));
 
+    this->saveLoadButton = DefaultButton("Save/Load", globals, renderWindow,
+                                         sf::Vector2f(position.x + 10, position.y + (y += 50)));
+
     this->redColorSelector = DefaultColorSelector(sf::Vector2f(position.x + 10, position.y + 10), sf::Color::Red, connectionColor == sf::Color::Red);
     this->blueColorSelector = DefaultColorSelector(sf::Vector2f(position.x + 50, position.y + 10), sf::Color::Blue, connectionColor == sf::Color::Blue);
     this->greenColorSelector = DefaultColorSelector(sf::Vector2f(position.x + 90, position.y + 10), sf::Color::Green, connectionColor == sf::Color::Green);
@@ -67,14 +73,14 @@ void DefaultMainWindowContextMenu::handleEvent(sf::Event event, EventResponse *r
     EventResponse *addNodeResponse = new EventResponse();
     addTextNodeButton.handleEvent(event, addNodeResponse);
     if (addNodeResponse->getPress()) {
-        mainWindow->nodes.insert(mainWindow->nodes.end(),
+        mainWindow->textNodes.insert(mainWindow->textNodes.end(),
                                  new DefaultTextNode(sf::Vector2f(event.mouseButton.x, event.mouseButton.y), globals));
         response->setDelete(true);
     }
     addNodeResponse->clear();
     addImageNodeButton.handleEvent(event, addNodeResponse);
     if (addNodeResponse->getPress()) {
-        mainWindow->nodes.insert(mainWindow->nodes.end(),
+        mainWindow->imageNodes.insert(mainWindow->imageNodes.end(),
                                  new DefaultImageNode(globals->textures[0], sf::Vector2f(event.mouseButton.x, event.mouseButton.y)));
         response->setDelete(true);
     }
@@ -115,6 +121,14 @@ void DefaultMainWindowContextMenu::handleEvent(sf::Event event, EventResponse *r
         }
         delete deleteBothResponse;
     }
+
+    EventResponse *saveLoadResponse = new EventResponse();
+    saveLoadButton.handleEvent(event, saveLoadResponse);
+    if(saveLoadResponse->getPress()){
+        response->setOpenSaveLoadWindow(true);
+        response->setDelete(true);
+    }
+    delete saveLoadResponse;
 
     EventResponse *ColorSelectorResponse = new EventResponse();
     redColorSelector.handleEvent(event, ColorSelectorResponse);

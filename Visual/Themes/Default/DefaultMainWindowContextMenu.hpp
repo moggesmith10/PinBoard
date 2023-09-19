@@ -35,6 +35,7 @@ public:
     DefaultButton deleteNodesButton;
     DefaultButton deleteConnectionsButton;
     DefaultButton deleteBothButton;
+    DefaultButton saveLoadButton;
     DefaultColorSelector redColorSelector;
     DefaultColorSelector blueColorSelector;
     DefaultColorSelector greenColorSelector;

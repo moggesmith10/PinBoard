@@ -14,29 +14,36 @@ bool Pinboard::writeToDisk(std::string path) {
         return false;
     }
 
-    std::string string = gzip::compress(reinterpret_cast<const char *>(serialize()), sizeof(serialize()));
+    std::vector<std::byte> bytes = serialize();
 
-    fwrite(string.c_str(), sizeof(char), string.size(), file);
+    fwrite(bytes.data(), sizeof(char), bytes.size(), file);
 
     fclose(file);
 
     return true;
 }
 
-std::byte *Pinboard::serialize() {
+std::vector<std::byte> Pinboard::serialize() {
     std::vector <std::byte> data;
     for (auto &textNode : textNodes) {
         auto serialized = textNode->serialize();
-        data.insert(data.end(), serialized, serialized + sizeof(serialized));
+        data.insert(data.end(), serialized.begin(), serialized.end());
     }
     for (auto &imageNode : imageNodes) {
         auto serialized = imageNode->serialize();
-        data.insert(data.end(), serialized, serialized + sizeof(serialized));
+        data.insert(data.end(), serialized.begin(), serialized.end());
     }
 
-    return data.data();
+    return data;
 }
 
-bool Pinboard::deserialize(std::byte *data) {
+bool Pinboard::deserialize(std::vector<std::byte> data) {
     return false;
+}
+
+Pinboard::Pinboard(std::vector<ITextNode *> textNodes, std::vector<IImageNode *> imageNodes,
+                   std::vector<IConnection *> connections) {
+    this->textNodes = textNodes;
+    this->imageNodes = imageNodes;
+    this->connections = connections;
 }

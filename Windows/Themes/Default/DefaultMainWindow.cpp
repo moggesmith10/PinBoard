@@ -4,6 +4,7 @@
 
 #include <functional>
 #include "DefaultMainWindow.hpp"
+#include "DefaultSaveLoadWindow.hpp"
 
 
 DefaultMainWindow::DefaultMainWindow(Globals *globals) : IMainWindow() {
@@ -31,12 +32,28 @@ void DefaultMainWindow::handleEvents() {
                 delete contextMenu;
                 contextMenu = nullptr;
             }
+
+            if(response->getOpenSaveLoadWindow()){
+                Pinboard* pinboard = new Pinboard(textNodes, imageNodes, connections);
+                DefaultSaveLoadWindow *saveLoadWindow = new DefaultSaveLoadWindow(pinboard, globals);
+                while (!saveLoadWindow->closeMe) {
+                    saveLoadWindow->handleEvents();
+                    saveLoadWindow->draw();
+                }
+                saveLoadWindow->renderWindow->close();
+                this->textNodes = pinboard->textNodes;
+                this->imageNodes = pinboard->imageNodes;
+                this->connections = pinboard->connections;
+                delete pinboard;
+                delete saveLoadWindow;
+            }
         }
         if(response->getDeleteSelectedNodes()){
             for(INode* node: selectedNodes){
                 deleteConnectionsToNode(node);
                 delete node;
-                nodes.erase(std::remove(nodes.begin(), nodes.end(), node), nodes.end());
+                textNodes.erase(std::remove(textNodes.begin(), textNodes.end(), node), textNodes.end());
+                imageNodes.erase(std::remove(imageNodes.begin(), imageNodes.end(), node), imageNodes.end());
             }
             selectedNodes.clear();
         }
@@ -56,7 +73,7 @@ void DefaultMainWindow::handleEvents() {
             else {
                 if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ||
                       sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))) {
-                    for (INode *selectedNode: this->nodes) {
+                    for (INode *selectedNode: this->nodes()) {
                         selectedNode->selected = false;
                     }
                     for(IConnection* selectedConnection: this->connections){
@@ -111,7 +128,7 @@ void DefaultMainWindow::handleEvents() {
             }
         }
 
-        for(INode* node: this->nodes){
+        for(INode* node: this->nodes()){
             response->clear();
             node->handleEvent(event, response);
             if(response->getSelectTextBox()) {
@@ -156,7 +173,7 @@ void DefaultMainWindow::draw() {
     for (IConnection *connection: this->connections) {
         connection->draw(this->renderWindow);
     }
-    for (INode *node: this->nodes) {
+    for (INode *node: this->nodes()) {
         node->draw(this->renderWindow);
     }
     if (this->contextMenu != nullptr) {

@@ -12,7 +12,7 @@
 
 class DefaultTextBox : public ITextBox {
 public:
-    DefaultTextBox(Globals *globals, sf::Vector2f position);
+    DefaultTextBox(Globals *globals, sf::Vector2f position, std::string content = "UNSET");
 
     void handleEvent(sf::Event event, EventResponse *response) override;
 

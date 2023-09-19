@@ -14,8 +14,8 @@
 
 class Serializeable {
 public:
-    virtual std::byte* serialize() = 0;
-    virtual bool deserialize(std::byte* data) = 0;
+    virtual std::vector<std::byte> serialize() = 0;
+    virtual bool deserialize(std::vector<std::byte> data) = 0;
 };
 
 
