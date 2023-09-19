@@ -33,21 +33,21 @@ DefaultMainWindowContextMenu::DefaultMainWindowContextMenu(sf::RenderWindow *ren
     this->globals = globals;
     this->mainWindow = mainWindow;
     int y = 50;
-    this->addTextNodeButton = DefaultMainWindowContextMenuItem("Add Node", globals, renderWindow,
-                                                               sf::Vector2f(position.x + 10, position.y + (y)));
-    this->addImageNodeButton = DefaultMainWindowContextMenuItem("Add Image", globals, renderWindow,
-                                                                sf::Vector2f(position.x + 10, position.y + (y += 50)));
+    this->addTextNodeButton = DefaultButton("Add Node", globals, renderWindow,
+                                            sf::Vector2f(position.x + 10, position.y + (y)));
+    this->addImageNodeButton = DefaultButton("Add Image", globals, renderWindow,
+                                             sf::Vector2f(position.x + 10, position.y + (y += 50)));
 
     if(context == BOTH || context == NODE) {
-        this->deleteNodesButton = DefaultMainWindowContextMenuItem("Delete Nodes", globals, renderWindow,
-                                                                   sf::Vector2f(position.x + 10, position.y + (y += 50)));
+        this->deleteNodesButton = DefaultButton("Delete Nodes", globals, renderWindow,
+                                                sf::Vector2f(position.x + 10, position.y + (y += 50)));
     }
     if(context == BOTH || context == CONNECTION)
-        this->deleteConnectionsButton = DefaultMainWindowContextMenuItem("Delete Connections", globals, renderWindow,
-                                                                         sf::Vector2f(position.x + 10, position.y + (y += 50)));
+        this->deleteConnectionsButton = DefaultButton("Delete Connections", globals, renderWindow,
+                                                      sf::Vector2f(position.x + 10, position.y + (y += 50)));
     if(context == BOTH)
-        this->deleteBothButton = DefaultMainWindowContextMenuItem("Delete Both", globals, renderWindow,
-                                                                         sf::Vector2f(position.x + 10, position.y + (y += 50)));
+        this->deleteBothButton = DefaultButton("Delete Both", globals, renderWindow,
+                                               sf::Vector2f(position.x + 10, position.y + (y += 50)));
 
     this->redColorSelector = DefaultColorSelector(sf::Vector2f(position.x + 10, position.y + 10), sf::Color::Red, connectionColor == sf::Color::Red);
     this->blueColorSelector = DefaultColorSelector(sf::Vector2f(position.x + 50, position.y + 10), sf::Color::Blue, connectionColor == sf::Color::Blue);

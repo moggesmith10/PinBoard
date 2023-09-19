@@ -19,6 +19,9 @@ public:
     void handleEvent(sf::Event event, EventResponse* response) override;
 
     void move(sf::Vector2f toMove) override;
+
+    bool deserialize(std::byte* data) override;
+    std::byte * serialize() override;
 private:
     sf::RectangleShape background;
     sf::RectangleShape border;

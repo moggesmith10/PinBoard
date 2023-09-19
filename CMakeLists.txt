@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.26)
 project(PinBoard)
 
 find_package(SFML REQUIRED system window graphics network audio)
+find_package(ZLIB REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -17,8 +18,8 @@ add_executable(PinBoard main.cpp
         Utilites/CursorUtilities.cpp
         Utilites/CursorUtilities.hpp
         Visual/IContextMenuItem.hpp
-        Visual/Themes/Default/DefaultMainWindowContextMenuItem.cpp
-        Visual/Themes/Default/DefaultMainWindowContextMenuItem.hpp
+        Visual/Themes/Default/DefaultButton.cpp
+        Visual/Themes/Default/DefaultButton.hpp
         Utilites/FontUtilities.cpp
         Utilites/FontUtilities.hpp
         Utilites/Globals.cpp
@@ -42,7 +43,15 @@ add_executable(PinBoard main.cpp
         Visual/IImageNode.hpp
         Visual/Themes/Default/DefaultImageNode.cpp
         Visual/Themes/Default/DefaultImageNode.hpp
-        Visual/INode.hpp)
+        Visual/INode.hpp
+        Utilites/Pinboard.cpp
+        Utilites/Pinboard.hpp
+        Utilites/Serializeable.hpp
+        Windows/ISaveLoadWindow.hpp
+        Windows/Themes/Default/DefaultSaveLoadWindow.cpp
+        Windows/Themes/Default/DefaultSaveLoadWindow.hpp
+        Libraries/gzip/utils.hpp
+        Libraries/gzip/version.hpp)
 
 add_custom_command(TARGET PinBoard PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -51,5 +60,5 @@ add_custom_command(TARGET PinBoard PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/Resources/ $<TARGET_FILE_DIR:PinBoard>/Resources)
 
-target_link_libraries(PinBoard PRIVATE sfml-audio sfml-graphics sfml-network sfml-system)
+target_link_libraries(PinBoard PRIVATE sfml-audio sfml-graphics sfml-network sfml-system ZLIB::ZLIB)
 

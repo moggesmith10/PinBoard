@@ -10,7 +10,7 @@
 #include "../../IContextMenu.hpp"
 #include "../../../Utilites/Globals.hpp"
 #include "../../IContextMenuItem.hpp"
-#include "DefaultMainWindowContextMenuItem.hpp"
+#include "DefaultButton.hpp"
 #include "../../../Windows/IMainWindow.hpp"
 #include "DefaultColorSelector.hpp"
 
@@ -30,11 +30,11 @@ public:
     sf::RectangleShape background;
     sf::RenderWindow *renderWindow;
     IMainWindow *mainWindow;
-    DefaultMainWindowContextMenuItem addTextNodeButton;
-    DefaultMainWindowContextMenuItem addImageNodeButton;
-    DefaultMainWindowContextMenuItem deleteNodesButton;
-    DefaultMainWindowContextMenuItem deleteConnectionsButton;
-    DefaultMainWindowContextMenuItem deleteBothButton;
+    DefaultButton addTextNodeButton;
+    DefaultButton addImageNodeButton;
+    DefaultButton deleteNodesButton;
+    DefaultButton deleteConnectionsButton;
+    DefaultButton deleteBothButton;
     DefaultColorSelector redColorSelector;
     DefaultColorSelector blueColorSelector;
     DefaultColorSelector greenColorSelector;
