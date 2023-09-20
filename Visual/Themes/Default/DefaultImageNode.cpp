@@ -47,43 +47,36 @@ void DefaultImageNode::handleEvent(sf::Event event, EventResponse *response) {
     }
 }
 
-bool DefaultImageNode::deserialize(std::vector<std::byte> data) {
-    std::string info = (char*) data.data();
-    std::string theme = info.substr(info.find(':'), info.find(';'));
-    info = info.substr(info.find(';') + 1);
-    std::string position = info.substr(info.find(':'), info.find(';'));
-    info = info.substr(info.find(';') + 1);
+bool DefaultImageNode::deserialize(std::string info) {
+    std::string theme = info.substr(info.find(std::string("theme") + SERIALIZEABLE_VALUE_DEFINER), info.find(SERIALIZEABLE_VALUE_ENDER));
+    std::string position = info.substr(info.find(std::string("position") + SERIALIZEABLE_VALUE_DEFINER), info.find(SERIALIZEABLE_VALUE_ENDER));
+    std::string type = info.substr(info.find(std::string("type") + SERIALIZEABLE_VALUE_DEFINER), info.find(SERIALIZEABLE_VALUE_ENDER));
 
-    std::string x = position.substr(info.find(':'), position.find(','));
-    std::string y = position.substr(position.find(',') + 1);
+    std::string texture = info.substr(info.find_last_of(SERIALIZEABLE_OBJECT_DELIMITER) + 1);
 
-    sprite.setPosition(std::stof(x), std::stof(y));
-
-    std::string texture = info.substr(0, info.find(';'));
-
-    this->texture = (sf::Texture*) std::stoi(texture);
-
+    delete this->texture;
+    this->texture = new sf::Texture();
+    this->texture->loadFromMemory(reinterpret_cast<const sf::Uint8 *>(texture.c_str()), texture.length());
+    sprite = sf::Sprite();
     sprite.setTexture(*this->texture);
 
     return true;
 }
 
-std::vector<std::byte> DefaultImageNode::serialize() {
-    std::vector<std::byte> bytes;
+std::string DefaultImageNode::serialize() {
 
     std::string info = std::string("theme") + SERIALIZEABLE_VALUE_DEFINER+ "default" + SERIALIZEABLE_VALUE_SEPARATOR
-            + "position" + SERIALIZEABLE_VALUE_DEFINER + std::to_string(sprite.getPosition().x) + SERIALIZEABLE_MULTIVALUE_SEPARATOR + std::to_string(sprite.getPosition().y) + SERIALIZEABLE_VALUE_SEPARATOR;
+            + "position" + SERIALIZEABLE_VALUE_DEFINER + std::to_string(sprite.getPosition().x) + SERIALIZEABLE_MULTIVALUE_SEPARATOR + std::to_string(sprite.getPosition().y) + SERIALIZEABLE_VALUE_SEPARATOR +
+            "type" + SERIALIZEABLE_VALUE_DEFINER + "image" + SERIALIZEABLE_VALUE_SEPARATOR;
 
-    bytes.insert(bytes.end(), (std::byte *) info.c_str(), (std::byte *) info.c_str() + info.length());
     sf::Image image = texture->copyToImage();
-    std::vector <std::byte> texture;
+    const char *texture;
     image.saveToMemory(reinterpret_cast<std::vector<sf::Uint8> &>(texture), "png");
-    bytes.insert(bytes.end(), texture.begin(), texture.end());
+    info.append(texture);
 
-    bytes.insert(bytes.end(), (std::byte *) &SERIALIZEABLE_OBJECT_DELIMITER, (std::byte *) SERIALIZEABLE_OBJECT_DELIMITER + sizeof(SERIALIZEABLE_OBJECT_DELIMITER));
+    info += SERIALIZEABLE_OBJECT_DELIMITER;
 
-
-    return bytes;
+    return info;
 }
 
 DefaultImageNode::DefaultImageNode() {

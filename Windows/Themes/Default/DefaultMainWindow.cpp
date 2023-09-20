@@ -34,7 +34,7 @@ void DefaultMainWindow::handleEvents() {
             }
 
             if(response->getOpenSaveLoadWindow()){
-                Pinboard* pinboard = new Pinboard(textNodes, imageNodes, connections);
+                Pinboard* pinboard = new Pinboard(textNodes, imageNodes, connections, globals);
                 DefaultSaveLoadWindow *saveLoadWindow = new DefaultSaveLoadWindow(pinboard, globals);
                 while (!saveLoadWindow->closeMe) {
                     saveLoadWindow->handleEvents();

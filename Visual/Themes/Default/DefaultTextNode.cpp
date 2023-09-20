@@ -4,6 +4,7 @@
 
 #include "DefaultTextNode.hpp"
 #include "DefaultTextBox.hpp"
+#include "../../../Utilites/StringUtils.hpp"
 
 void DefaultTextNode::draw(sf::RenderWindow *renderWindow) {
     if(selected){
@@ -68,22 +69,19 @@ void DefaultTextNode::move(sf::Vector2f toMove) {
     center += toMove;
 }
 
-bool DefaultTextNode::deserialize(std::vector<std::byte> data) {
-    std::string info = (char *) data.data();
-    std::string theme = info.substr(info.find(':'), info.find(';'));
-    info = info.substr(info.find(';') + 1);
-    std::string position = info.substr(info.find(':'), info.find(';'));
-    info = info.substr(info.find(';') + 1);
+bool DefaultTextNode::deserialize(std::string info) {
+    std::string theme = StringUtils::findParameter(info, "theme");
+    std::string position = StringUtils::findParameter(info, "position");
 
-    std::string x = position.substr(info.find(':'), position.find(','));
-    std::string y = position.substr(position.find(',') + 1);
+    std::vector <std::string> values = StringUtils::split(position, (char) SERIALIZEABLE_MULTIVALUE_SEPARATOR);
 
-    border.setPosition(std::stof(x), std::stof(y));
+    std::string x = values[0];
+    std::string y = values[1];
 
-    std::string title = info.substr(info.find(':'), info.find(';'));
-    info = info.substr(info.find(';') + 1);
+    move(sf::Vector2f(std::stof(x), std::stof(y)));
 
-    std::string content = info.substr(0, info.find(';'));
+    std::string title = StringUtils::findParameter(info, "title");
+    std::string content = StringUtils::findParameter(info, "content");
 
     this->title->text.setString(title);
     this->content->text.setString(content);
@@ -91,17 +89,26 @@ bool DefaultTextNode::deserialize(std::vector<std::byte> data) {
     return true;
 }
 
-std::vector<std::byte> DefaultTextNode::serialize() {
-    std::vector <std::byte> bytes;
+std::string DefaultTextNode::serialize() {
 
     std::string info = std::string("theme") + SERIALIZEABLE_VALUE_DEFINER + "default" + SERIALIZEABLE_VALUE_ENDER +
             "position" + SERIALIZEABLE_VALUE_DEFINER + std::to_string(border.getPosition().x) + SERIALIZEABLE_MULTIVALUE_SEPARATOR + std::to_string(border.getPosition().y) + SERIALIZEABLE_VALUE_ENDER +
+            "type" + SERIALIZEABLE_VALUE_DEFINER + "text" + SERIALIZEABLE_VALUE_ENDER +
             "title" + SERIALIZEABLE_VALUE_DEFINER + title->text.getString() + SERIALIZEABLE_VALUE_ENDER +
             "content" + SERIALIZEABLE_VALUE_DEFINER + content->text.getString() + SERIALIZEABLE_VALUE_ENDER;
 
-    bytes.insert(bytes.end(), (std::byte *) info.c_str(), (std::byte *) info.c_str() + info.length());
+    info += SERIALIZEABLE_OBJECT_DELIMITER;
 
-    bytes.insert(bytes.end(), (std::byte *) &SERIALIZEABLE_OBJECT_DELIMITER, (std::byte *) SERIALIZEABLE_OBJECT_DELIMITER + 1);
+    return info;
+}
 
-    return bytes;
+DefaultTextNode::DefaultTextNode(Globals *globals) {
+    border = sf::RectangleShape(sf::Vector2f(300, 300));
+    border.setFillColor(sf::Color(100, 100, 100));
+    background = sf::RectangleShape(sf::Vector2f(290, 290));
+    background.setFillColor(sf::Color(160, 150, 150));
+    background.setPosition(5, 5);
+    title = new DefaultTextBox(globals, sf::Vector2f(10, 10));
+    content = new DefaultTextBox(globals, sf::Vector2f(10, 50));
+    center = sf::Vector2f(150, 150);
 }

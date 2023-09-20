@@ -17,8 +17,8 @@ public:
     void draw(sf::RenderWindow *renderWindow) override;
     void move(sf::Vector2f toMove) override;
     void handleEvent(sf::Event event, EventResponse *response) override;
-    bool deserialize(std::vector<std::byte>) override;
-    std::vector<std::byte> serialize() override;
+    bool deserialize(std::string) override;
+    std::string serialize() override;
 };
 
 

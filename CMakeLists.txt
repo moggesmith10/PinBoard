@@ -51,7 +51,9 @@ add_executable(PinBoard main.cpp
         Windows/Themes/Default/DefaultSaveLoadWindow.cpp
         Windows/Themes/Default/DefaultSaveLoadWindow.hpp
         Libraries/gzip/utils.hpp
-        Libraries/gzip/version.hpp)
+        Libraries/gzip/version.hpp
+        Utilites/StringUtils.cpp
+        Utilites/StringUtils.hpp)
 
 add_custom_command(TARGET PinBoard PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory

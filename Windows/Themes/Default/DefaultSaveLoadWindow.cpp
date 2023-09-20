@@ -43,4 +43,12 @@ void DefaultSaveLoadWindow::handleEvents() {
     if(response->getPress()){
         pinboard->writeToDisk(saveTextBox->content);
     }
+
+    response->clear();
+
+    loadButton->handleEvent(event, response);
+
+    if(response->getPress()){
+        pinboard->loadFromDisk(saveTextBox->content);
+    }
 }

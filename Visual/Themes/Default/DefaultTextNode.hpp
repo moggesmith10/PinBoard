@@ -15,13 +15,14 @@ public:
     void draw(sf::RenderWindow *renderWindow) override;
 
     DefaultTextNode(sf::Vector2f position, Globals *globals);
+    DefaultTextNode(Globals *globals);
 
     void handleEvent(sf::Event event, EventResponse* response) override;
 
     void move(sf::Vector2f toMove) override;
 
-    bool deserialize(std::vector<std::byte> data) override;
-    std::vector<std::byte> serialize() override;
+    bool deserialize(std::string data) override;
+    std::string serialize() override;
 private:
     sf::RectangleShape background;
     sf::RectangleShape border;
