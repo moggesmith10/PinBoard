@@ -12,7 +12,9 @@
 class StringUtils {
 public:
     static std::vector<std::string> split(const std::string& s, char delimiter);
+    static std::vector<std::string> breakUpObject(const std::string& s, char delimiter);
     static std::string findParameter(std::string data, std::string parameterName);
+    static std::vector<std::string> findMultiParameter(std::string data, std::string parameterName);
 };
 
 

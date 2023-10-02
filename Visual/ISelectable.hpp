@@ -4,11 +4,13 @@
 
 #ifndef PINBOARD_ISELECTABLE_HPP
 #define PINBOARD_ISELECTABLE_HPP
+#include "../Utilites/RandomNumberGenerator.hpp"
 
 
 class ISelectable {
 public:
     bool selected = false;
+    uint id;
 };
 
 

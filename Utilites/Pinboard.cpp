@@ -9,6 +9,7 @@
 #include "StringUtils.hpp"
 #include "../Visual/Themes/Default/DefaultTextNode.hpp"
 #include "../Visual/Themes/Default/DefaultImageNode.hpp"
+#include "../Visual/Themes/Default/DefaultConnection.hpp"
 
 bool Pinboard::writeToDisk(std::string path) {
 
@@ -39,6 +40,10 @@ std::string Pinboard::serialize() {
         auto serialized = imageNode->serialize();
         data.insert(data.end(), serialized.begin(), serialized.end());
     }
+    for(auto &connection : connections){
+        auto serialized = connection->serialize();
+        data.insert(data.end(), serialized.begin(), serialized.end());
+    }
 
     return data;
 }
@@ -53,9 +58,9 @@ bool Pinboard::deserialize(std::string data) {
     textNodes.clear();
     imageNodes.clear();
 
-    std::string info = std::string((char *) data.data());
+    std::string info = data;
 
-    std::vector <std::string> objects = StringUtils::split(info, (char) SERIALIZEABLE_OBJECT_DELIMITER);
+    std::vector <std::string> objects = StringUtils::breakUpObject(info, (char) SERIALIZEABLE_OBJECT_DELIMITER);
 
     for(std::string object : objects){
         std::vector <std::string> values = StringUtils::split(object, (char) SERIALIZEABLE_VALUE_ENDER);
@@ -72,6 +77,35 @@ bool Pinboard::deserialize(std::string data) {
                 IImageNode *node = new DefaultImageNode();
                 node->deserialize(object);
                 imageNodes.push_back(node);
+            }
+            else if(type == "connection"){
+                INode* node1 = nullptr;
+                INode* node2 = nullptr;
+
+                int node1Id = std::stoi(StringUtils::findParameter(object, "node1"));
+                int node2Id = std::stoi(StringUtils::findParameter(object, "node2"));
+
+                for(INode* node : textNodes){
+                    if(node->id == node1Id){
+                        node1 = node;
+                    }
+                    else if(node->id == node2Id){
+                        node2 = node;
+                    }
+                }
+                if(node1 == nullptr || node2 == nullptr) {
+                    for (INode *node: imageNodes) {
+                        if (node->id == node1Id) {
+                            node1 = node;
+                        } else if (node->id == node2Id) {
+                            node2 = node;
+                        }
+                    }
+                }
+
+                IConnection* connection = new DefaultConnection(node1, node2);
+                connection->deserialize(object);
+                connections.push_back(connection);
             }
         }
     }
@@ -96,7 +130,13 @@ bool Pinboard::loadFromDisk(std::string path) {
 
     std::ifstream in(path, std::ios::in | std::ios::binary);
 
-    deserialize(std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>()));
+    std::string fileData;
+
+    while (in.peek() != EOF){
+        fileData += in.get();
+    }
+
+    deserialize(fileData);
 
     return true;
 }

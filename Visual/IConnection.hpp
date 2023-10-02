@@ -8,7 +8,7 @@
 #include "IDrawable.hpp"
 #include "ITextNode.hpp"
 
-class IConnection : public IDrawable, public IEventHandler, public ISelectable {
+class IConnection : public IDrawable, public IEventHandler, public ISelectable, public Serializeable {
 public:
     INode *node1;
     INode *node2;

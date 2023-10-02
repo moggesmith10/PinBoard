@@ -53,7 +53,9 @@ add_executable(PinBoard main.cpp
         Libraries/gzip/utils.hpp
         Libraries/gzip/version.hpp
         Utilites/StringUtils.cpp
-        Utilites/StringUtils.hpp)
+        Utilites/StringUtils.hpp
+        Utilites/RandomNumberGenerator.cpp
+        Utilites/RandomNumberGenerator.hpp)
 
 add_custom_command(TARGET PinBoard PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory

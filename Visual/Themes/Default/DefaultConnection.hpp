@@ -21,6 +21,8 @@ public:
     void changeColor(sf::Color color) override;
     void move(sf::Vector2f toMove) override;
     void move(sf::Vector2f toMove, INode* node) override;
+    bool deserialize(std::string data) override;
+    std::string serialize() override;
 };
 
 

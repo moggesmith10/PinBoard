@@ -25,6 +25,7 @@ DefaultTextNode::DefaultTextNode(sf::Vector2f position, Globals *globals) {
     title = new DefaultTextBox(globals, sf::Vector2f(position.x + 10, position.y + 10));
     content = new DefaultTextBox(globals, sf::Vector2f(position.x + 10, position.y + 50));
     center = position + sf::Vector2f(150, 150);
+    this->id = RandomNumberGenerator::getRandomNumber();
 }
 
 void DefaultTextNode::handleEvent(sf::Event event, EventResponse *response) {
@@ -85,6 +86,7 @@ bool DefaultTextNode::deserialize(std::string info) {
 
     this->title->text.setString(title);
     this->content->text.setString(content);
+    this->id = std::stoi(StringUtils::findParameter(info, "id"));
 
     return true;
 }
@@ -95,7 +97,8 @@ std::string DefaultTextNode::serialize() {
             "position" + SERIALIZEABLE_VALUE_DEFINER + std::to_string(border.getPosition().x) + SERIALIZEABLE_MULTIVALUE_SEPARATOR + std::to_string(border.getPosition().y) + SERIALIZEABLE_VALUE_ENDER +
             "type" + SERIALIZEABLE_VALUE_DEFINER + "text" + SERIALIZEABLE_VALUE_ENDER +
             "title" + SERIALIZEABLE_VALUE_DEFINER + title->text.getString() + SERIALIZEABLE_VALUE_ENDER +
-            "content" + SERIALIZEABLE_VALUE_DEFINER + content->text.getString() + SERIALIZEABLE_VALUE_ENDER;
+            "content" + SERIALIZEABLE_VALUE_DEFINER + content->text.getString() + SERIALIZEABLE_VALUE_ENDER +
+            "id" + SERIALIZEABLE_VALUE_DEFINER + std::to_string(id) + SERIALIZEABLE_VALUE_ENDER;
 
     info += SERIALIZEABLE_OBJECT_DELIMITER;
 
