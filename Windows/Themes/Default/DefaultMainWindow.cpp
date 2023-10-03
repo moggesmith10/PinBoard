@@ -5,6 +5,7 @@
 #include <functional>
 #include "DefaultMainWindow.hpp"
 #include "DefaultSaveLoadWindow.hpp"
+#include "../../../Visual/Themes/Default/DefaultTextNode.hpp"
 
 
 DefaultMainWindow::DefaultMainWindow(Globals *globals) : IMainWindow() {
@@ -19,6 +20,7 @@ void DefaultMainWindow::handleEvents() {
         if (event.type == sf::Event::Closed) {
             this->renderWindow->close();
         }
+        //Context Menu
         EventResponse *response = new EventResponse();
         if (contextMenu != nullptr) {
             contextMenu->handleEvent(event, response);
@@ -66,6 +68,7 @@ void DefaultMainWindow::handleEvents() {
         }
         response->clear();
 
+        //Window
         if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Right) {
                 createContextMenu(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
@@ -105,6 +108,24 @@ void DefaultMainWindow::handleEvents() {
             lastMousePosition = nullptr;
         }
 
+        if(event.type == sf::Event::KeyPressed){
+            if((sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl)) && sf::Keyboard::isKeyPressed(sf::Keyboard::V)){
+                sf::Clipboard clipboard;
+                std::string data = clipboard.getString();
+                DefaultTextNode* textNode = new DefaultTextNode(sf::Vector2f((int)sf::Mouse::getPosition(*renderWindow).x, (int)sf::Mouse::getPosition(*renderWindow).y), globals);
+                textNodes.insert(textNodes.end(), textNode);
+                if(data.length() < 15){
+                    textNode->setTitle(data);
+                    textNode->setContent("Unset");
+                }
+                else{
+                    textNode->setTitle("Unset");
+                    textNode->setContent(data);
+                }
+            }
+        }
+
+        //Connections
         for(IConnection* connection: connections){
             response->clear();
             connection->handleEvent(event, response);
@@ -128,6 +149,7 @@ void DefaultMainWindow::handleEvents() {
             }
         }
 
+        //Nodes
         for(INode* node: this->nodes()){
             response->clear();
             node->handleEvent(event, response);
@@ -136,6 +158,7 @@ void DefaultMainWindow::handleEvents() {
                     this->textBox->isFocused = false;
                 }
                 this->textBox = static_cast<ITextBox *>(response->getSelectedObject());
+                this->textBox->isFocused = true;
             }
             if(response->getPress()){
                 if(!(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))){

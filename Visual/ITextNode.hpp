@@ -13,7 +13,9 @@
 #include "INode.hpp"
 
 class ITextNode :  public INode{
-
+public:
+    virtual void setTitle(std::string title) = 0;
+    virtual void setContent(std::string title) = 0;
 protected:
     ITextBox *title;
     ITextBox *content;

@@ -115,3 +115,11 @@ DefaultTextNode::DefaultTextNode(Globals *globals) {
     content = new DefaultTextBox(globals, sf::Vector2f(10, 50));
     center = sf::Vector2f(150, 150);
 }
+
+void DefaultTextNode::setTitle(std::string title) {
+    this->title->text.setString(title);
+}
+
+void DefaultTextNode::setContent(std::string content) {
+    this->content->text.setString(content);
+}

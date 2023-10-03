@@ -19,6 +19,8 @@ public:
     void draw(sf::RenderWindow *renderWindow) override;
 
     void move(sf::Vector2f) override;
+private:
+    bool empty = false;
 };
 
 

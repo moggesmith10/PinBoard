@@ -23,6 +23,9 @@ public:
 
     bool deserialize(std::string data) override;
     std::string serialize() override;
+
+    void setTitle(std::string title) override;
+    void setContent(std::string content) override;
 private:
     sf::RectangleShape background;
     sf::RectangleShape border;
