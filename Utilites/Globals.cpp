@@ -6,6 +6,8 @@
 
 Globals::Globals() {
     fontUtilites = new FontUtilities();
+    textures[0] =  new sf::Texture();
+    textures[0]->loadFromFile("Resources/Textures/DefaultImageNode.png");
 }
 
 Globals::~Globals() {

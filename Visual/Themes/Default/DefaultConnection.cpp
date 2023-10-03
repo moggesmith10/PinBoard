@@ -4,6 +4,7 @@
 
 #include "DefaultConnection.hpp"
 #include "../../../Utilites/CursorUtilities.hpp"
+#include "../../../Utilites/StringUtils.hpp"
 
 DefaultConnection::DefaultConnection(INode *node1, INode *node2) {
     this->node1 = node1;
@@ -17,7 +18,7 @@ DefaultConnection::DefaultConnection(INode *node1, INode *node2) {
     selectedLine[1] = sf::Vertex(sf::Vector2f(node1->center.x + thicknessSelected, node1->center.y + thicknessSelected));
     selectedLine[2] = sf::Vertex(sf::Vector2f(node2->center.x - thicknessSelected, node2->center.y - thicknessSelected));
     selectedLine[3] = sf::Vertex(sf::Vector2f(node2->center.x + thicknessSelected, node2->center.y + thicknessSelected));
-
+    this->id = RandomNumberGenerator::getRandomNumber();
 }
 
 void DefaultConnection::draw(sf::RenderWindow *renderWindow) {
@@ -44,4 +45,44 @@ void DefaultConnection::changeColor(sf::Color color) {
     selectedLine[1].color = color;
     selectedLine[2].color = color;
     selectedLine[3].color = color;
+}
+
+void DefaultConnection::move(sf::Vector2f toMove) {
+    line[0].position += toMove;
+    line[1].position += toMove;
+    selectedLine[0].position += toMove;
+    selectedLine[1].position += toMove;
+    selectedLine[2].position += toMove;
+    selectedLine[3].position += toMove;
+}
+
+void DefaultConnection::move(sf::Vector2f toMove, INode *node) {
+    if(node == node1){
+        line[0].position += toMove;
+        selectedLine[0].position += toMove;
+        selectedLine[1].position += toMove;
+    }
+    else if(node == node2){
+        line[1].position += toMove;
+        selectedLine[2].position += toMove;
+        selectedLine[3].position += toMove;
+    }
+}
+
+bool DefaultConnection::deserialize(std::string data) {
+    std::vector<std::string> values = StringUtils::findMultiParameter(data, "colour");
+    this->changeColor(sf::Color(stoi(values[0]), stoi(values[1]), stoi(values[2]), stoi(values[3])));
+
+    return true;
+}
+
+std::string DefaultConnection::serialize() {
+    std::string toReturn;
+    toReturn += std::string("type") + SERIALIZEABLE_VALUE_DEFINER + std::string("connection") + SERIALIZEABLE_VALUE_ENDER;
+    toReturn += std::string("theme") + SERIALIZEABLE_VALUE_DEFINER + std::string("default") + SERIALIZEABLE_VALUE_ENDER;
+    toReturn += std::string("colour") + SERIALIZEABLE_VALUE_DEFINER + std::to_string(line[0].color.r) + SERIALIZEABLE_MULTIVALUE_SEPARATOR + std::to_string(line[0].color.g) + SERIALIZEABLE_MULTIVALUE_SEPARATOR + std::to_string(line[0].color.b) + SERIALIZEABLE_MULTIVALUE_SEPARATOR + std::to_string(line[0].color.a) + SERIALIZEABLE_VALUE_ENDER;
+    toReturn += std::string("node1") + SERIALIZEABLE_VALUE_DEFINER + std::to_string(node1->id) + SERIALIZEABLE_VALUE_ENDER;
+    toReturn += std::string("node2") + SERIALIZEABLE_VALUE_DEFINER + std::to_string(node2->id) + SERIALIZEABLE_VALUE_ENDER;
+    toReturn += SERIALIZEABLE_OBJECT_DELIMITER;
+    return toReturn;
 }

@@ -9,12 +9,11 @@
 #include "../Utilites/Globals.hpp"
 #include "../Utilites/EventResponse.hpp"
 #include "IEventHandler.hpp"
+#include "IDrawable.hpp"
 
-class IContextMenuItem : public IEventHandler{
+class IContextMenuItem : public IEventHandler, public IDrawable{
 public:
     virtual bool isHovered(sf::Vector2f position) = 0;
-
-    virtual void draw() = 0;
 
 protected:
     Globals *globals;

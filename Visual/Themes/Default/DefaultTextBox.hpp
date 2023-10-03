@@ -12,11 +12,13 @@
 
 class DefaultTextBox : public ITextBox {
 public:
-    DefaultTextBox(Globals *globals, sf::Vector2f position);
+    DefaultTextBox(Globals *globals, sf::Vector2f position, std::string content = "UNSET");
 
     void handleEvent(sf::Event event, EventResponse *response) override;
 
     void draw(sf::RenderWindow *renderWindow) override;
+
+    void move(sf::Vector2f) override;
 };
 
 
