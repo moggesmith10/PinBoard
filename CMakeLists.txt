@@ -55,7 +55,10 @@ add_executable(PinBoard main.cpp
         Utilites/StringUtils.cpp
         Utilites/StringUtils.hpp
         Utilites/RandomNumberGenerator.cpp
-        Utilites/RandomNumberGenerator.hpp)
+        Utilites/RandomNumberGenerator.hpp
+        Windows/IImageLoadWindow.hpp
+        Windows/Themes/Default/DefaultImageLoadWindow.cpp
+        Windows/Themes/Default/DefaultImageLoadWindow.hpp)
 
 add_custom_command(TARGET PinBoard PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory

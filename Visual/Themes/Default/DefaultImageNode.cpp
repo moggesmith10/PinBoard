@@ -17,13 +17,14 @@ DefaultImageNode::DefaultImageNode(sf::Texture *texture, sf::Vector2f position) 
     sprite = sf::Sprite();
     sprite.setTexture(*texture);
     sprite.setPosition(position);
-    sprite.setScale(300 / texture->getSize().x, 300 / texture->getSize().y);
+    sf::Vector2 textureSize = texture->getSize();
+    sprite.setScale(300.f / textureSize.x, 300.f / textureSize.y);
     border = sf::RectangleShape();
     border.setFillColor(sf::Color(100, 100, 100));
     border.setPosition(position - sf::Vector2f(5, 5));
-    border.setSize(sf::Vector2f(texture->getSize().x + 10, texture->getSize().y + 10));
+    border.setSize(sf::Vector2f(310, 310));
 
-    center = position + sf::Vector2f(texture->getSize().x / 2, texture->getSize().y / 2);
+    center = position + sf::Vector2f(150, 150);
     this->id = RandomNumberGenerator::getRandomNumber();
 }
 
@@ -36,7 +37,8 @@ void DefaultImageNode::move(sf::Vector2f toMove) {
 void DefaultImageNode::handleEvent(sf::Event event, EventResponse *response) {
 
     if(event.type == sf::Event::MouseButtonPressed){
-        if(sprite.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))){
+        sf::Rect bounds = sprite.getGlobalBounds();
+        if(bounds.contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))){
             response->setPress(true);
         }
     }

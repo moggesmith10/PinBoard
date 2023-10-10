@@ -5,6 +5,7 @@
 #include "DefaultMainWindowContextMenu.hpp"
 #include "DefaultTextNode.hpp"
 #include "DefaultImageNode.hpp"
+#include "../../../Windows/Themes/Default/DefaultImageLoadWindow.hpp"
 
 void DefaultMainWindowContextMenu::draw(sf::RenderWindow *renderWindow) {
     renderWindow->draw(background);
@@ -80,8 +81,22 @@ void DefaultMainWindowContextMenu::handleEvent(sf::Event event, EventResponse *r
     addNodeResponse->clear();
     addImageNodeButton.handleEvent(event, addNodeResponse);
     if (addNodeResponse->getPress()) {
-        mainWindow->imageNodes.insert(mainWindow->imageNodes.end(),
-                                 new DefaultImageNode(globals->textures[0], sf::Vector2f(event.mouseButton.x, event.mouseButton.y)));
+        DefaultImageLoadWindow *imageLoadWindow = new DefaultImageLoadWindow(globals);
+        while (imageLoadWindow->renderWindow->isOpen()){
+            imageLoadWindow->handleEvents();
+            imageLoadWindow->draw();
+        }
+        if(imageLoadWindow->image != nullptr) {
+            sf::Texture *texture = new sf::Texture();
+            texture->loadFromImage(*imageLoadWindow->image);
+
+            mainWindow->imageNodes.insert(mainWindow->imageNodes.end(),
+                                          new DefaultImageNode(texture,
+                                                               sf::Vector2f(event.mouseButton.x, event.mouseButton.y)));
+            mainWindow->imageNodes.insert(mainWindow->imageNodes.end(),
+                                          new DefaultImageNode());
+        }
+        delete imageLoadWindow;
         response->setDelete(true);
     }
 

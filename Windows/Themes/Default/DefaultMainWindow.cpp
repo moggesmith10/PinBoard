@@ -192,7 +192,7 @@ void DefaultMainWindow::handleEvents() {
 }
 
 void DefaultMainWindow::draw() {
-    this->renderWindow->clear(sf::Color::Black);
+    this->renderWindow->clear(sf::Color(30, 20, 10));
     for (IConnection *connection: this->connections) {
         connection->draw(this->renderWindow);
     }
