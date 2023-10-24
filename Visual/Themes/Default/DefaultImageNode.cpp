@@ -59,17 +59,17 @@ bool DefaultImageNode::deserialize(std::string info) {
 
     std::string texture = info.substr( info.length() - length, length);
 
-    delete this->texture;
     this->texture = new sf::Texture();
     sf::Image image = sf::Image();
     image.loadFromMemory(reinterpret_cast<const sf::Uint8 *>(texture.c_str()), texture.length());
     this->texture->loadFromImage(image);
     sprite = sf::Sprite();
     sprite.setTexture(*this->texture);
+    sprite.setScale(300.f / this->texture->getSize().x, 300.f / this->texture->getSize().y);
     move(sf::Vector2f(stof(position[0]), stof(position[1])));
-    border.setSize(sf::Vector2f(this->texture->getSize().x + 10, this->texture->getSize().y + 10));
+    border.setSize(sf::Vector2f(310, 310));
 
-    center = sprite.getPosition() + sf::Vector2f(this->texture->getSize().x / 2, this->texture->getSize().y / 2);
+    center = sprite.getPosition() + sf::Vector2f(150, 150);
 
     this->id = std::stoi(StringUtils::findParameter(info, "id"));
 
@@ -83,7 +83,7 @@ std::string DefaultImageNode::serialize() {
             "type" + SERIALIZEABLE_VALUE_DEFINER + "image" + SERIALIZEABLE_VALUE_ENDER +
             "id" + SERIALIZEABLE_VALUE_DEFINER + std::to_string(id) + SERIALIZEABLE_VALUE_ENDER;
 
-    sf::Image image = texture->copyToImage();
+    sf::Image image = this->texture->copyToImage();
     std::vector<sf::Uint8> texture;
     image.saveToMemory(texture, "jpeg");
     info.append(std::string("length") + SERIALIZEABLE_VALUE_DEFINER + std::to_string(texture.size()) + SERIALIZEABLE_VALUE_ENDER

@@ -93,8 +93,6 @@ void DefaultMainWindowContextMenu::handleEvent(sf::Event event, EventResponse *r
             mainWindow->imageNodes.insert(mainWindow->imageNodes.end(),
                                           new DefaultImageNode(texture,
                                                                sf::Vector2f(event.mouseButton.x, event.mouseButton.y)));
-            mainWindow->imageNodes.insert(mainWindow->imageNodes.end(),
-                                          new DefaultImageNode());
         }
         delete imageLoadWindow;
         response->setDelete(true);
