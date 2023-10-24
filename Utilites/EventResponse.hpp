@@ -55,6 +55,10 @@ public:
 
     bool getMoveNode();
 
+    void setCreateTextNode(bool value);
+
+    bool getCreateTextNode();
+
     void setOpenSaveLoadWindow(bool value);
 
     bool getOpenSaveLoadWindow();
@@ -75,6 +79,7 @@ private:
         CHANGE_CONNECTION_COLOR,
         MOVE_NODE,
         OPEN_SAVE_LOAD_WINDOW,
+        CREATE_TEXT_NODE,
         RESPONSE_VALUES_MAX
     };
     std::bitset<RESPONSE_VALUES_MAX> response;

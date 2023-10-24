@@ -9,7 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include "../../IContextMenu.hpp"
 #include "../../../Utilites/Globals.hpp"
-#include "../../IContextMenuItem.hpp"
+#include "../../IButton.hpp"
 #include "DefaultButton.hpp"
 #include "../../../Windows/IMainWindow.hpp"
 #include "DefaultColorSelector.hpp"

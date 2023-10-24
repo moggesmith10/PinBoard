@@ -2,8 +2,8 @@
 // Created by hakkerboi on 9/4/23.
 //
 
-#ifndef PINBOARD_ICONTEXTMENUITEM_HPP
-#define PINBOARD_ICONTEXTMENUITEM_HPP
+#ifndef PINBOARD_IBUTTON_HPP
+#define PINBOARD_IBUTTON_HPP
 
 
 #include "../Utilites/Globals.hpp"
@@ -11,7 +11,7 @@
 #include "IEventHandler.hpp"
 #include "IDrawable.hpp"
 
-class IContextMenuItem : public IEventHandler, public IDrawable{
+class IButton : public IEventHandler, public IDrawable{
 public:
     virtual bool isHovered(sf::Vector2f position) = 0;
 
@@ -20,4 +20,4 @@ protected:
 };
 
 
-#endif //PINBOARD_ICONTEXTMENUITEM_HPP
+#endif //PINBOARD_IBUTTON_HPP

@@ -6,7 +6,7 @@ find_package(ZLIB REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(PinBoard main.cpp
+add_executable(PinBoardDefault main.cpp
         Windows/IMainWindow.hpp
         Windows/IWindow.hpp
         Windows/Themes/Default/DefaultMainWindow.cpp
@@ -17,7 +17,7 @@ add_executable(PinBoard main.cpp
         Visual/Themes/Default/DefaultMainWindowContextMenu.hpp
         Utilites/CursorUtilities.cpp
         Utilites/CursorUtilities.hpp
-        Visual/IContextMenuItem.hpp
+        Visual/IButton.hpp
         Visual/Themes/Default/DefaultButton.cpp
         Visual/Themes/Default/DefaultButton.hpp
         Utilites/FontUtilities.cpp
@@ -58,14 +58,48 @@ add_executable(PinBoard main.cpp
         Utilites/RandomNumberGenerator.hpp
         Windows/IImageLoadWindow.hpp
         Windows/Themes/Default/DefaultImageLoadWindow.cpp
-        Windows/Themes/Default/DefaultImageLoadWindow.hpp)
+        Windows/Themes/Default/DefaultImageLoadWindow.hpp
+        Visual/IAnimateable.hpp
+        Visual/IAnimateableLine.hpp
+)
+add_executable(PinboardWarm mainWarm.cpp
+        Windows/IMainWindow.hpp
+        Windows/IWindow.hpp
+        Windows/Themes/Warm/WarmMainWindow.cpp
+        Windows/Themes/Warm/WarmMainWindow.hpp
+        Utilites/FontUtilities.cpp
+        Utilites/FontUtilities.hpp
+        Utilites/Globals.cpp
+        Utilites/Globals.hpp
+        Windows/Themes/Warm/WarmMainWindow.cpp
+        Windows/Themes/Warm/WarmMainWindow.hpp
+        Visual/Themes/Warm/WarmContextMenu.cpp
+        Visual/Themes/Warm/WarmContextMenu.hpp
+        Visual/IContextMenu.hpp
+        Visual/Themes/Warm/WarmButton.cpp
+        Visual/Themes/Warm/WarmButton.hpp
+        Utilites/EventResponse.cpp
+        Utilites/EventResponse.hpp
+        Visual/Themes/Warm/WarmTextNode.cpp
+        Visual/Themes/Warm/WarmTextNode.hpp
+        Visual/Themes/Warm/WarmLine.cpp
+        Visual/Themes/Warm/WarmLine.hpp
+)
 
-add_custom_command(TARGET PinBoard PRE_BUILD
+add_custom_command(TARGET PinBoardDefault PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/Fonts/ $<TARGET_FILE_DIR:PinBoard>/Fonts)
-add_custom_command(TARGET PinBoard PRE_BUILD
+        ${CMAKE_SOURCE_DIR}/Fonts/ $<TARGET_FILE_DIR:PinBoardDefault>/Fonts)
+add_custom_command(TARGET PinBoardDefault PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/Resources/ $<TARGET_FILE_DIR:PinBoard>/Resources)
+        ${CMAKE_SOURCE_DIR}/Resources/ $<TARGET_FILE_DIR:PinBoardDefault>/Resources)
 
-target_link_libraries(PinBoard PRIVATE sfml-audio sfml-graphics sfml-network sfml-system ZLIB::ZLIB)
+add_custom_command(TARGET PinboardWarm PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/Fonts/ $<TARGET_FILE_DIR:PinboardWarm>/Fonts)
+add_custom_command(TARGET PinboardWarm PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/Resources/ $<TARGET_FILE_DIR:PinboardWarm>/Resources)
+
+target_link_libraries(PinBoardDefault PRIVATE sfml-audio sfml-graphics sfml-network sfml-system ZLIB::ZLIB)
+target_link_libraries(PinboardWarm PRIVATE sfml-audio sfml-graphics sfml-network sfml-system ZLIB::ZLIB)
 

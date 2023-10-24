@@ -7,9 +7,9 @@
 
 
 #include <SFML/Graphics.hpp>
-#include "../../IContextMenuItem.hpp"
+#include "../../IButton.hpp"
 
-class DefaultButton : public IContextMenuItem {
+class DefaultButton : public IButton {
 public:
     bool isHovered(sf::Vector2f position) override;
 

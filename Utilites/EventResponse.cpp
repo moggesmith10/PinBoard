@@ -111,3 +111,11 @@ void EventResponse::setOpenSaveLoadWindow(bool value) {
 bool EventResponse::getOpenSaveLoadWindow() {
     return response[OPEN_SAVE_LOAD_WINDOW];
 }
+
+void EventResponse::setCreateTextNode(bool value) {
+    response[CREATE_TEXT_NODE] = value;
+}
+
+bool EventResponse::getCreateTextNode() {
+    return response[CREATE_TEXT_NODE];
+}
