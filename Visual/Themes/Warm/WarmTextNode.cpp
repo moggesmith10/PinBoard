@@ -14,7 +14,7 @@ void WarmTextNode::draw(sf::RenderWindow *renderWindow) {
     for(auto line : lines){
         line.draw(renderWindow);
     }
-
+    renderWindow->draw(background);
 }
 
 void WarmTextNode::animate() {
@@ -40,6 +40,10 @@ WarmTextNode::WarmTextNode(sf::Vector2f position, sf::Vector2f size, std::string
 
     currentLine = lines.begin();
     currentLine->start();
+
+    background = sf::RectangleShape(size);
+    background.setPosition(position);
+    background.setFillColor(sf::Color(160, 150, 150, 100));
 }
 
 void WarmTextNode::move(sf::Vector2f toMove) {

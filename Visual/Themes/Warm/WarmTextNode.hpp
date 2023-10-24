@@ -24,6 +24,7 @@ private:
     void animate();
     bool finished = false;
     std::vector<WarmLine>::iterator currentLine;
+    sf::RectangleShape background;
 };
 
 

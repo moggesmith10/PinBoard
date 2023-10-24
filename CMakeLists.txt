@@ -61,6 +61,8 @@ add_executable(PinBoardDefault main.cpp
         Windows/Themes/Default/DefaultImageLoadWindow.hpp
         Visual/IAnimateable.hpp
         Visual/IAnimateableLine.hpp
+        Visual/IAnimateableRectangleColor.cpp
+        Visual/IAnimateableRectangleColor.hpp
 )
 add_executable(PinboardWarm mainWarm.cpp
         Windows/IMainWindow.hpp
