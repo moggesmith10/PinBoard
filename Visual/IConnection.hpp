@@ -6,9 +6,9 @@
 #define PINBOARD_ICONNECTION_HPP
 
 #include "IDrawable.hpp"
-#include "INode.hpp"
+#include "ITextNode.hpp"
 
-class IConnection : public IDrawable, public IEventHandler, public ISelectable {
+class IConnection : public IDrawable, public IEventHandler, public ISelectable, public Serializeable {
 public:
     INode *node1;
     INode *node2;
@@ -16,6 +16,7 @@ public:
     const int thickness = 2;
     const int thicknessSelected = 4;
     const int hitbox = 10;
+    virtual void move(sf::Vector2f toMove, INode* node) = 0;
     bool containsNode(INode* node) const{
         return node1 == node || node2 == node;
     };

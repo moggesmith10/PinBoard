@@ -2,10 +2,10 @@
 // Created by hakkerboi on 9/4/23.
 //
 
-#include "DefaultMainWindowContextMenuItem.hpp"
+#include "DefaultButton.hpp"
 #include "../../../Utilites/CursorUtilities.hpp"
 
-DefaultMainWindowContextMenuItem::DefaultMainWindowContextMenuItem(
+DefaultButton::DefaultButton(
         std::string text, Globals *globals, sf::RenderWindow *renderWindow, sf::Vector2f position) {
     background = sf::RectangleShape(sf::Vector2f(230, 40));
     background.setPosition(position);
@@ -16,16 +16,12 @@ DefaultMainWindowContextMenuItem::DefaultMainWindowContextMenuItem(
     this->text.setFillColor(sf::Color::Black);
 }
 
-void DefaultMainWindowContextMenuItem::draw() {
-    renderWindow->draw(background);
-    renderWindow->draw(text);
-}
 
-bool DefaultMainWindowContextMenuItem::isHovered(sf::Vector2f position) {
+bool DefaultButton::isHovered(sf::Vector2f position) {
     return background.getGlobalBounds().contains(position);
 }
 
-void DefaultMainWindowContextMenuItem::handleEvent(sf::Event event, EventResponse *response) {
+void DefaultButton::handleEvent(sf::Event event, EventResponse *response) {
 
     bool hovered;
     if (event.type == sf::Event::MouseMoved) {
@@ -45,5 +41,15 @@ void DefaultMainWindowContextMenuItem::handleEvent(sf::Event event, EventRespons
     }
 }
 
-DefaultMainWindowContextMenuItem::DefaultMainWindowContextMenuItem() = default;
+void DefaultButton::move(sf::Vector2f toMove) {
+    background.setPosition(background.getPosition() + toMove);
+    text.setPosition(text.getPosition() + toMove);
+}
+
+void DefaultButton::draw(sf::RenderWindow *renderWindow) {
+    renderWindow->draw(background);
+    renderWindow->draw(text);
+}
+
+DefaultButton::DefaultButton() = default;
 

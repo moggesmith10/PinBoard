@@ -9,8 +9,8 @@
 #include <SFML/Graphics.hpp>
 #include "../../IContextMenu.hpp"
 #include "../../../Utilites/Globals.hpp"
-#include "../../IContextMenuItem.hpp"
-#include "DefaultMainWindowContextMenuItem.hpp"
+#include "../../IButton.hpp"
+#include "DefaultButton.hpp"
 #include "../../../Windows/IMainWindow.hpp"
 #include "DefaultColorSelector.hpp"
 
@@ -25,13 +25,17 @@ public:
 
     void handleEvent(sf::Event event, EventResponse *response) override;
 
+    void move(sf::Vector2f toMove) override;
+
     sf::RectangleShape background;
     sf::RenderWindow *renderWindow;
     IMainWindow *mainWindow;
-    DefaultMainWindowContextMenuItem addNodeButton;
-    DefaultMainWindowContextMenuItem deleteNodesButton;
-    DefaultMainWindowContextMenuItem deleteConnectionsButton;
-    DefaultMainWindowContextMenuItem deleteBothButton;
+    DefaultButton addTextNodeButton;
+    DefaultButton addImageNodeButton;
+    DefaultButton deleteNodesButton;
+    DefaultButton deleteConnectionsButton;
+    DefaultButton deleteBothButton;
+    DefaultButton saveLoadButton;
     DefaultColorSelector redColorSelector;
     DefaultColorSelector blueColorSelector;
     DefaultColorSelector greenColorSelector;

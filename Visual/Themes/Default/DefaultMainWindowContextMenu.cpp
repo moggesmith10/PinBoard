@@ -3,17 +3,23 @@
 //
 
 #include "DefaultMainWindowContextMenu.hpp"
-#include "DefaultNode.hpp"
+#include "DefaultTextNode.hpp"
+#include "DefaultImageNode.hpp"
+#include "../../../Windows/Themes/Default/DefaultImageLoadWindow.hpp"
 
 void DefaultMainWindowContextMenu::draw(sf::RenderWindow *renderWindow) {
     renderWindow->draw(background);
-    addNodeButton.draw();
+    addTextNodeButton.draw(renderWindow);
+    addImageNodeButton.draw(renderWindow);
     if(context == BOTH || context == NODE)
-        deleteNodesButton.draw();
+        deleteNodesButton.draw(renderWindow);
     if(context == BOTH || context == CONNECTION)
-        deleteConnectionsButton.draw();
+        deleteConnectionsButton.draw(renderWindow);
     if(context == BOTH)
-        deleteBothButton.draw();
+        deleteBothButton.draw(renderWindow);
+
+saveLoadButton.draw(renderWindow);
+
     redColorSelector.draw(renderWindow);
     greenColorSelector.draw(renderWindow);
     blueColorSelector.draw(renderWindow);
@@ -31,18 +37,24 @@ DefaultMainWindowContextMenu::DefaultMainWindowContextMenu(sf::RenderWindow *ren
     this->globals = globals;
     this->mainWindow = mainWindow;
     int y = 50;
-    this->addNodeButton = DefaultMainWindowContextMenuItem("Add Node", globals, renderWindow,
-                                                           sf::Vector2f(position.x + 10, position.y + (y)));
+    this->addTextNodeButton = DefaultButton("Add Node", globals, renderWindow,
+                                            sf::Vector2f(position.x + 10, position.y + (y)));
+    this->addImageNodeButton = DefaultButton("Add Image", globals, renderWindow,
+                                             sf::Vector2f(position.x + 10, position.y + (y += 50)));
+
     if(context == BOTH || context == NODE) {
-        this->deleteNodesButton = DefaultMainWindowContextMenuItem("Delete Nodes", globals, renderWindow,
-                                                                   sf::Vector2f(position.x + 10, position.y + (y += 50)));
+        this->deleteNodesButton = DefaultButton("Delete Nodes", globals, renderWindow,
+                                                sf::Vector2f(position.x + 10, position.y + (y += 50)));
     }
     if(context == BOTH || context == CONNECTION)
-        this->deleteConnectionsButton = DefaultMainWindowContextMenuItem("Delete Connections", globals, renderWindow,
-                                                                         sf::Vector2f(position.x + 10, position.y + (y += 50)));
+        this->deleteConnectionsButton = DefaultButton("Delete Connections", globals, renderWindow,
+                                                      sf::Vector2f(position.x + 10, position.y + (y += 50)));
     if(context == BOTH)
-        this->deleteBothButton = DefaultMainWindowContextMenuItem("Delete Both", globals, renderWindow,
-                                                                         sf::Vector2f(position.x + 10, position.y + (y += 50)));
+        this->deleteBothButton = DefaultButton("Delete Both", globals, renderWindow,
+                                               sf::Vector2f(position.x + 10, position.y + (y += 50)));
+
+    this->saveLoadButton = DefaultButton("Save/Load", globals, renderWindow,
+                                         sf::Vector2f(position.x + 10, position.y + (y += 50)));
 
     this->redColorSelector = DefaultColorSelector(sf::Vector2f(position.x + 10, position.y + 10), sf::Color::Red, connectionColor == sf::Color::Red);
     this->blueColorSelector = DefaultColorSelector(sf::Vector2f(position.x + 50, position.y + 10), sf::Color::Blue, connectionColor == sf::Color::Blue);
@@ -60,12 +72,32 @@ DefaultMainWindowContextMenu::~DefaultMainWindowContextMenu() {
 
 void DefaultMainWindowContextMenu::handleEvent(sf::Event event, EventResponse *response) {
     EventResponse *addNodeResponse = new EventResponse();
-    addNodeButton.handleEvent(event, addNodeResponse);
+    addTextNodeButton.handleEvent(event, addNodeResponse);
     if (addNodeResponse->getPress()) {
-        mainWindow->nodes.insert(mainWindow->nodes.end(),
-                                 new DefaultNode(sf::Vector2f(event.mouseButton.x, event.mouseButton.y), globals));
+        mainWindow->textNodes.insert(mainWindow->textNodes.end(),
+                                 new DefaultTextNode(sf::Vector2f(event.mouseButton.x, event.mouseButton.y), globals));
         response->setDelete(true);
     }
+    addNodeResponse->clear();
+    addImageNodeButton.handleEvent(event, addNodeResponse);
+    if (addNodeResponse->getPress()) {
+        DefaultImageLoadWindow *imageLoadWindow = new DefaultImageLoadWindow(globals);
+        while (imageLoadWindow->renderWindow->isOpen()){
+            imageLoadWindow->handleEvents();
+            imageLoadWindow->draw();
+        }
+        if(imageLoadWindow->image != nullptr) {
+            sf::Texture *texture = new sf::Texture();
+            texture->loadFromImage(*imageLoadWindow->image);
+
+            mainWindow->imageNodes.insert(mainWindow->imageNodes.end(),
+                                          new DefaultImageNode(texture,
+                                                               sf::Vector2f(event.mouseButton.x, event.mouseButton.y)));
+        }
+        delete imageLoadWindow;
+        response->setDelete(true);
+    }
+
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
         if (!addNodeResponse->getPress()) {
             response->setDelete(true);
@@ -103,6 +135,14 @@ void DefaultMainWindowContextMenu::handleEvent(sf::Event event, EventResponse *r
         delete deleteBothResponse;
     }
 
+    EventResponse *saveLoadResponse = new EventResponse();
+    saveLoadButton.handleEvent(event, saveLoadResponse);
+    if(saveLoadResponse->getPress()){
+        response->setOpenSaveLoadWindow(true);
+        response->setDelete(true);
+    }
+    delete saveLoadResponse;
+
     EventResponse *ColorSelectorResponse = new EventResponse();
     redColorSelector.handleEvent(event, ColorSelectorResponse);
     if(ColorSelectorResponse->getPress()){
@@ -135,5 +175,23 @@ void DefaultMainWindowContextMenu::handleEvent(sf::Event event, EventResponse *r
     }
     ColorSelectorResponse->clear();
     delete ColorSelectorResponse;
+
+}
+
+void DefaultMainWindowContextMenu::move(sf::Vector2f toMove) {
+    redColorSelector.move(toMove);
+    greenColorSelector.move(toMove);
+    blueColorSelector.move(toMove);
+    yellowColorSelector.move(toMove);
+    orangeColorSelector.move(toMove);
+    purpleColorSelector.move(toMove);
+    background.setPosition(background.getPosition() + toMove);
+    addTextNodeButton.move(toMove);
+    if(context == BOTH || context == NODE)
+        deleteNodesButton.move(toMove);
+    if(context == BOTH || context == CONNECTION)
+        deleteConnectionsButton.move(toMove);
+    if(context == BOTH)
+        deleteBothButton.move(toMove);
 
 }

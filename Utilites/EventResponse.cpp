@@ -76,11 +76,11 @@ void EventResponse::setDeleteSelectedConnections(bool value) {
 }
 
 void EventResponse::setDeselectTextbox(bool value) {
-    response[DESELECT_TETXBOX] = value;
+    response[DESELECT_TEXTBOX] = value;
 }
 
 bool EventResponse::getDeselectTextbox() {
-    return response[DESELECT_TETXBOX];
+    return response[DESELECT_TEXTBOX];
 }
 
 sf::Color EventResponse::changeConnectionColor() {
@@ -94,4 +94,28 @@ void EventResponse::setChangeConnectionColor(sf::Color color) {
 
 bool EventResponse::getChangeConnectionColor() {
     return response[CHANGE_CONNECTION_COLOR];
+}
+
+void EventResponse::setMoveNode(bool value) {
+    response[MOVE_NODE] = value;
+}
+
+bool EventResponse::getMoveNode() {
+    return response[MOVE_NODE];
+}
+
+void EventResponse::setOpenSaveLoadWindow(bool value) {
+    response[OPEN_SAVE_LOAD_WINDOW] = value;
+}
+
+bool EventResponse::getOpenSaveLoadWindow() {
+    return response[OPEN_SAVE_LOAD_WINDOW];
+}
+
+void EventResponse::setCreateTextNode(bool value) {
+    response[CREATE_TEXT_NODE] = value;
+}
+
+bool EventResponse::getCreateTextNode() {
+    return response[CREATE_TEXT_NODE];
 }

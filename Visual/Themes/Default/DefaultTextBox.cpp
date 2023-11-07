@@ -4,13 +4,13 @@
 
 #include "DefaultTextBox.hpp"
 
-DefaultTextBox::DefaultTextBox(Globals *globals, sf::Vector2f position) {
+DefaultTextBox::DefaultTextBox(Globals *globals, sf::Vector2f position, std::string content) {
     text.setFont(*globals->fontUtilites->getFont(FontUtilities::NotoSansMedium));
     text.setCharacterSize(24);
     text.setFillColor(sf::Color::Black);
     text.setStyle(sf::Text::Regular);
     text.setPosition(position);
-    content = "Test";
+    this->content = content;
     text.setString(content);
 }
 
@@ -26,19 +26,23 @@ void DefaultTextBox::draw(sf::RenderWindow *renderWindow) {
 
 void DefaultTextBox::handleEvent(sf::Event event, EventResponse *response) {
     if (event.type == sf::Event::TextEntered && isFocused) {
-        if (event.text.unicode < 128) {
-            if (event.text.unicode == 8) {
-                if (!content.empty()) {
-                    content.pop_back();
-                }
-            } else {
-                content += static_cast<char>(event.text.unicode);
-            }
-            text.setString(content);
-        }
         if(event.text.unicode == 13){
             isFocused = false;
-            response->setDeleteSelectedNodes(true);
+        }
+        else if (event.text.unicode == 8) {
+            if (!content.empty()) {
+                content.pop_back();
+            }
+        }
+        else if (event.text.unicode < 128) {
+            content += static_cast<char>(event.text.unicode);
+        }
+        empty = content.empty();
+        if(empty){
+            text.setString("Unset");
+        }
+        else {
+            text.setString(content);
         }
     }
     else if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
@@ -50,4 +54,8 @@ void DefaultTextBox::handleEvent(sf::Event event, EventResponse *response) {
             isFocused = false;
         }
     }
+}
+
+void DefaultTextBox::move(sf::Vector2f toMove) {
+    text.setPosition(text.getPosition() + toMove);
 }

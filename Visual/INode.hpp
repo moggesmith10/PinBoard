@@ -7,15 +7,11 @@
 
 
 #include "IDrawable.hpp"
-#include "ITextBox.hpp"
 #include "IEventHandler.hpp"
 #include "ISelectable.hpp"
+#include "../Utilites/Serializeable.hpp"
 
-class INode : public IDrawable, public IEventHandler, public ISelectable{
-
-protected:
-    ITextBox *title;
-    ITextBox *content;
+class INode : public IDrawable, public IEventHandler, public ISelectable, public Serializeable {
 public:
     sf::Vector2f center;
 };

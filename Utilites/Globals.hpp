@@ -12,6 +12,7 @@ class Globals {
 public:
     Globals();
     ~Globals();
+    sf::Texture* textures[1];
     FontUtilities *fontUtilites;
 };
 

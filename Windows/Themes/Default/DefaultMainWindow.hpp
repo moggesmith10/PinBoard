@@ -18,6 +18,8 @@ public:
 
     void draw() override;
 
+    sf::Vector2f* lastMousePosition = nullptr;
+
 private:
     void createContextMenu(sf::Vector2f position);
     void deleteConnectionsToNode(INode *node);

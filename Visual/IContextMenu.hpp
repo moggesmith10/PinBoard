@@ -8,11 +8,10 @@
 #include "../Utilites/Globals.hpp"
 #include "IDrawable.hpp"
 #include "../Utilites/EventResponse.hpp"
+#include "IEventHandler.hpp"
 
-class IContextMenu : public IDrawable {
-    std::vector<sf::Shape> shapes;
+class IContextMenu : public IDrawable, public IEventHandler{
 public:
-    virtual void handleEvent(sf::Event event, EventResponse *response) = 0;
     enum menuContext {
         NODE,
         CONNECTION,

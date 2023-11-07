@@ -19,6 +19,10 @@ public:
     const int thicknessSelected = 4;
     const int hitbox = 10;
     void changeColor(sf::Color color) override;
+    void move(sf::Vector2f toMove) override;
+    void move(sf::Vector2f toMove, INode* node) override;
+    bool deserialize(std::string data) override;
+    std::string serialize() override;
 };
 
 

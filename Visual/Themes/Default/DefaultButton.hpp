@@ -7,20 +7,22 @@
 
 
 #include <SFML/Graphics.hpp>
-#include "../../IContextMenuItem.hpp"
+#include "../../IButton.hpp"
 
-class DefaultMainWindowContextMenuItem : public IContextMenuItem {
+class DefaultButton : public IButton {
 public:
     bool isHovered(sf::Vector2f position) override;
 
-    void draw() override;
+    void draw(sf::RenderWindow *renderWindow) override;
 
-    DefaultMainWindowContextMenuItem();
+    DefaultButton();
 
-    DefaultMainWindowContextMenuItem(std::string text, Globals *globals, sf::RenderWindow *renderWindow,
-                                     sf::Vector2f position);
+    DefaultButton(std::string text, Globals *globals, sf::RenderWindow *renderWindow,
+                  sf::Vector2f position);
 
     void handleEvent(sf::Event event, EventResponse *response) override;
+
+    void move(sf::Vector2f toMove) override;
 
 private:
     sf::RenderWindow *renderWindow;

@@ -4,6 +4,8 @@
 
 #include <functional>
 #include "DefaultMainWindow.hpp"
+#include "DefaultSaveLoadWindow.hpp"
+#include "../../../Visual/Themes/Default/DefaultTextNode.hpp"
 
 
 DefaultMainWindow::DefaultMainWindow(Globals *globals) : IMainWindow() {
@@ -18,6 +20,7 @@ void DefaultMainWindow::handleEvents() {
         if (event.type == sf::Event::Closed) {
             this->renderWindow->close();
         }
+        //Context Menu
         EventResponse *response = new EventResponse();
         if (contextMenu != nullptr) {
             contextMenu->handleEvent(event, response);
@@ -31,12 +34,28 @@ void DefaultMainWindow::handleEvents() {
                 delete contextMenu;
                 contextMenu = nullptr;
             }
+
+            if(response->getOpenSaveLoadWindow()){
+                Pinboard* pinboard = new Pinboard(textNodes, imageNodes, connections, globals);
+                DefaultSaveLoadWindow *saveLoadWindow = new DefaultSaveLoadWindow(pinboard, globals);
+                while (!saveLoadWindow->closeMe) {
+                    saveLoadWindow->handleEvents();
+                    saveLoadWindow->draw();
+                }
+                saveLoadWindow->renderWindow->close();
+                this->textNodes = pinboard->textNodes;
+                this->imageNodes = pinboard->imageNodes;
+                this->connections = pinboard->connections;
+                delete pinboard;
+                delete saveLoadWindow;
+            }
         }
         if(response->getDeleteSelectedNodes()){
             for(INode* node: selectedNodes){
                 deleteConnectionsToNode(node);
                 delete node;
-                nodes.erase(std::remove(nodes.begin(), nodes.end(), node), nodes.end());
+                textNodes.erase(std::remove(textNodes.begin(), textNodes.end(), node), textNodes.end());
+                imageNodes.erase(std::remove(imageNodes.begin(), imageNodes.end(), node), imageNodes.end());
             }
             selectedNodes.clear();
         }
@@ -49,6 +68,7 @@ void DefaultMainWindow::handleEvents() {
         }
         response->clear();
 
+        //Window
         if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Right) {
                 createContextMenu(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
@@ -56,7 +76,7 @@ void DefaultMainWindow::handleEvents() {
             else {
                 if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ||
                       sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))) {
-                    for (INode *selectedNode: this->nodes) {
+                    for (INode *selectedNode: this->nodes()) {
                         selectedNode->selected = false;
                     }
                     for(IConnection* selectedConnection: this->connections){
@@ -68,6 +88,44 @@ void DefaultMainWindow::handleEvents() {
             }
         }
 
+        if(event.type == sf::Event::MouseMoved){
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Middle)){
+                if(lastMousePosition == nullptr){
+                    lastMousePosition = new sf::Vector2f(event.mouseMove.x, event.mouseMove.y);
+                }
+                for(INode* node: selectedNodes){
+                    node->move(sf::Vector2f(event.mouseMove.x, event.mouseMove.y) - *lastMousePosition);
+                    for(IConnection* connection : connections){
+                        connection->move(sf::Vector2f(event.mouseMove.x, event.mouseMove.y) - *lastMousePosition, node);
+                    }
+                }
+                *lastMousePosition = sf::Vector2f(event.mouseMove.x, event.mouseMove.y);
+            }
+        }
+
+        if(event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Middle){
+            delete lastMousePosition;
+            lastMousePosition = nullptr;
+        }
+
+        if(event.type == sf::Event::KeyPressed){
+            if((sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl)) && sf::Keyboard::isKeyPressed(sf::Keyboard::V)){
+                sf::Clipboard clipboard;
+                std::string data = clipboard.getString();
+                DefaultTextNode* textNode = new DefaultTextNode(sf::Vector2f((int)sf::Mouse::getPosition(*renderWindow).x, (int)sf::Mouse::getPosition(*renderWindow).y), globals);
+                textNodes.insert(textNodes.end(), textNode);
+                if(data.length() < 15){
+                    textNode->setTitle(data);
+                    textNode->setContent("Unset");
+                }
+                else{
+                    textNode->setTitle("Unset");
+                    textNode->setContent(data);
+                }
+            }
+        }
+
+        //Connections
         for(IConnection* connection: connections){
             response->clear();
             connection->handleEvent(event, response);
@@ -91,7 +149,8 @@ void DefaultMainWindow::handleEvents() {
             }
         }
 
-        for(INode* node: this->nodes){
+        //Nodes
+        for(INode* node: this->nodes()){
             response->clear();
             node->handleEvent(event, response);
             if(response->getSelectTextBox()) {
@@ -99,13 +158,10 @@ void DefaultMainWindow::handleEvents() {
                     this->textBox->isFocused = false;
                 }
                 this->textBox = static_cast<ITextBox *>(response->getSelectedObject());
+                this->textBox->isFocused = true;
             }
             if(response->getPress()){
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)){
-                    selectedNodes.push_back(node);
-                    node->selected = true;
-                }
-                else{
+                if(!(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))){
                     for(IConnection* selectedConnection: this->selectedConnections){
                         selectedConnection->selected = false;
                     }
@@ -114,10 +170,12 @@ void DefaultMainWindow::handleEvents() {
                         selectedNode->selected = false;
                     }
                     selectedNodes.clear();
+
+                }
+                if(std::find(selectedNodes.begin(), selectedNodes.end(), node) == selectedNodes.end())
                     selectedNodes.push_back(node);
                     node->selected = true;
                 }
-            }
             if(response->getConnectTo()){
                 if(selectedNodes.size() == 1 && selectedNodes[0] != node){
                     if(isConnectionUnique(selectedNodes[0], node)) {
@@ -134,11 +192,11 @@ void DefaultMainWindow::handleEvents() {
 }
 
 void DefaultMainWindow::draw() {
-    this->renderWindow->clear(sf::Color::Black);
+    this->renderWindow->clear(sf::Color(30, 20, 10));
     for (IConnection *connection: this->connections) {
         connection->draw(this->renderWindow);
     }
-    for (INode *node: this->nodes) {
+    for (INode *node: this->nodes()) {
         node->draw(this->renderWindow);
     }
     if (this->contextMenu != nullptr) {
@@ -172,6 +230,7 @@ void DefaultMainWindow::deleteConnectionsToNode(INode *node) {
         if(connection->containsNode(node)){
             delete connection;
             connections.erase(std::remove(connections.begin(), connections.end(), connection), connections.end());
+            selectedConnections.erase(std::remove(selectedConnections.begin(), selectedConnections.end(), connection), selectedConnections.end());
             deleteConnectionsToNode(node);
             break;
         }

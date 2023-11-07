@@ -25,9 +25,10 @@ public:
 
     bool getConnectTo();
 
-    void setConnectTo(void  *object);
+    void setConnectTo(void *object);
 
     void setDeselectTextbox(bool value);
+
     bool getDeselectTextbox();
 
     void setDeleteSelectedNodes(bool value);
@@ -41,11 +42,26 @@ public:
     bool getDeleteSelectedNodes();
 
     bool getDeleteSelectedConnections();
+
     void setDeleteSelectedConnections(bool value);
 
     void setSelectTextBox(void *object);
+
     bool getSelectTextBox();
+
     void *getSelectedObject();
+
+    void setMoveNode(bool value);
+
+    bool getMoveNode();
+
+    void setCreateTextNode(bool value);
+
+    bool getCreateTextNode();
+
+    void setOpenSaveLoadWindow(bool value);
+
+    bool getOpenSaveLoadWindow();
 
     sf::Color connectionColor;
 
@@ -59,8 +75,11 @@ private:
         DELETE_SELECTED_NODES,
         DELETE_SELECTED_CONNECTIONS,
         CONNECT_TO,
-        DESELECT_TETXBOX,
+        DESELECT_TEXTBOX,
         CHANGE_CONNECTION_COLOR,
+        MOVE_NODE,
+        OPEN_SAVE_LOAD_WINDOW,
+        CREATE_TEXT_NODE,
         RESPONSE_VALUES_MAX
     };
     std::bitset<RESPONSE_VALUES_MAX> response;
